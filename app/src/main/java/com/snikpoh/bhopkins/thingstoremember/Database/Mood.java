@@ -1,5 +1,19 @@
 package com.snikpoh.bhopkins.thingstoremember.Database;
 
+import com.snikpoh.bhopkins.thingstoremember.Utilities.SQL;
+
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.AUTOINCREMENT;
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.CREATE_TABLE;
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.DROP_TABLE;
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.IF_EXISTS;
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.INTEGER;
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.KEY;
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.NOT;
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.NULL;
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.PRIMARY;
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.TEXT;
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.UNIQUE;
+
 public class Mood
 {
 	private static final String MOOD_TABLE_NAME = "Mood";
@@ -8,17 +22,17 @@ public class Mood
 	private static final String MOOD_COLUMN_DESCRIPTION = "Description";
 	private static final String MOOD_COLUMN_IMAGE       = "Image";
 	
-	private static final String CREATE_TABLE_MOOD = "CREATE TABLE " +
+	private static final String CREATE_TABLE_MOOD = CREATE_TABLE +
 			                                                MOOD_TABLE_NAME + " (" +
-			                                                MOOD_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-			                                                MOOD_COLUMN_DESCRIPTION + " TEXT NOT NULL UNIQUE, " +
-			                                                MOOD_COLUMN_IMAGE + " TEXT)";
+			                                                MOOD_COLUMN_ID + INTEGER + PRIMARY + KEY + AUTOINCREMENT +
+			                                                MOOD_COLUMN_DESCRIPTION + TEXT + NOT + NULL + UNIQUE + ", " +
+			                                                MOOD_COLUMN_IMAGE + TEXT + ")";
 	
 	private static final String[] MOOD_COLUMN_LIST = new String[]{MOOD_COLUMN_ID,
 	                                                              MOOD_COLUMN_DESCRIPTION,
 	                                                              MOOD_COLUMN_IMAGE};
 	
-	private static final String DROP_TABLE_MOOD = "DROP TABLE IF EXISTS " + MOOD_TABLE_NAME;
+	private static final String DROP_TABLE_MOOD = DROP_TABLE + IF_EXISTS + MOOD_TABLE_NAME;
 	private String description;
 	private String image;
 	

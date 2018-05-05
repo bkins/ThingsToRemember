@@ -1,6 +1,10 @@
 package com.snikpoh.bhopkins.thingstoremember.Database;
 
+import com.snikpoh.bhopkins.thingstoremember.Utilities.SQL;
+
 import java.util.Date;
+
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.*;
 
 public class Entry
 {
@@ -18,15 +22,15 @@ public class Entry
 	                                                               ENTRY_COLUMN_MOOD_ID,
 	                                                               ENTRY_COLUMN_JOURNAL_ID};
 	
-	private static final String CREATE_TABLE_ENTRY = "CREATE TABLE " +
+	private static final String CREATE_TABLE_ENTRY = CREATE_TABLE +
 			                                                 ENTRY_TABLE_NAME + " (" +
-			                                                 ENTRY_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-			                                                 ENTRY_COLUMN_DESCRIPTION + " TEXT, " +
-			                                                 ENTRY_COLUMN_ENTRY_DATE + " TEXT NOT NULL," +
-			                                                 ENTRY_COLUMN_MOOD_ID + " INTEGER," +
-			                                                 ENTRY_COLUMN_JOURNAL_ID + " INTEGER)";
+			                                                 ENTRY_COLUMN_ID + INTEGER + PRIMARY + KEY + AUTOINCREMENT +
+			                                                 ENTRY_COLUMN_DESCRIPTION + TEXT + ", " +
+			                                                 ENTRY_COLUMN_ENTRY_DATE + TEXT + NOT + NULL + ", " +
+			                                                 ENTRY_COLUMN_MOOD_ID + INTEGER + "," +
+			                                                 ENTRY_COLUMN_JOURNAL_ID + INTEGER + ")";
 	
-	private static final String DROP_TABLE_ENTRY = "DROP TABLE IF EXISTS " + ENTRY_TABLE_NAME;
+	private static final String DROP_TABLE_ENTRY = DROP_TABLE + IF_EXISTS + ENTRY_TABLE_NAME;
 	
 	private String description;
 	private Date   entryDate;
@@ -112,8 +116,4 @@ public class Entry
 		this.mood = mood;
 	}
 	
-	public void Entry()
-	{
-
-	}
 }

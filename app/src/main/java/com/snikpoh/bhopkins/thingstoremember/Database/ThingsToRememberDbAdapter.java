@@ -9,12 +9,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.snikpoh.bhopkins.thingstoremember.Utilities.SQL;
+
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.*;
+
 public class ThingsToRememberDbAdapter
 {
-	public static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 3;
 	private static final String DATABASE_NAME = "ttrDb.db";
 	private static final String LOG_TAG = "ttrDbAdapter";
+	
 	private final Context dbContext;
+	
 	private DatabaseHelper dbHelper;
 	private SQLiteDatabase sqlDb;
 	
@@ -168,7 +174,7 @@ public class ThingsToRememberDbAdapter
 	                            String entryMoodId,
 	                            String entryJournalId) throws Exception
 	{
-		if (entryJournalId == null || entryJournalId == "")
+		if (entryJournalId == null || entryJournalId.equals(""))
 		{
 			throw new Exception("No JournalID was provided when trying to create the Journal Entry.");
 		}
@@ -517,18 +523,17 @@ public class ThingsToRememberDbAdapter
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-			Log.d(TAG, "Attempting to upgrade DB Version from " + oldVersion + " to " + newVersion);
-			db.execSQL("ALTER TABLE " + Entry.getEntryTableName() +
-					           " ADD " + Entry.getEntryColumnJournalId() + " INTEGER");
 			if (oldVersion <= 2)
 			{
-
+				Log.d(TAG, "Attempting to upgrade DB Version from " + oldVersion + " to " + newVersion);
+				db.execSQL(ALTER + TABLE + Entry.getEntryTableName() +
+						           ADD + Entry.getEntryColumnJournalId() + " INTEGER");
 			}
 
-			if (oldVersion < 3)
-			{
-				//next DB upgrade goes here
-			}
+//			if (oldVersion < 3)
+//			{
+//				//next DB upgrade goes here
+//			}
 			
 			Log.d(TAG, "DB upgraded to version " + newVersion);
 		}
