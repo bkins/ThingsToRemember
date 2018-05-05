@@ -1,14 +1,18 @@
 package com.snikpoh.bhopkins.thingstoremember.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -30,6 +34,13 @@ public class ManageJournalsActivity extends AppCompatActivity implements View.On
 	private EditText                etIntervalAmount;
 	private AutoCompleteTextView    actInterval;
 	private FloatingActionButton    fabBackManageJournal;
+	private ImageButton             ibDeleteJournal;
+	
+	private String journalName;
+	private String journalId;
+	private String journalType;
+	
+	private Cursor cursor;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -41,6 +52,9 @@ public class ManageJournalsActivity extends AppCompatActivity implements View.On
 		initializeControls();
 		initializeDatabase();
 		
+		setExtraDataFromMain();
+		setTitleText();
+		
 		loadAdView(R.id.adViewManageJournal);
 	}
 	
@@ -50,8 +64,11 @@ public class ManageJournalsActivity extends AppCompatActivity implements View.On
 		etJournalType           = findViewById(R.id.etJournalType);
 		etIntervalAmount        = findViewById(R.id.etIntervalAmount);
 		actInterval             = findViewById(R.id.actInterval);
-		fabBackManageJournal    = findViewById(R.id.fabBackManageJournal);
 		
+		ibDeleteJournal         = findViewById(R.id.ibDeleteJournal);
+		ibDeleteJournal.setOnClickListener(this);
+		
+		fabBackManageJournal    = findViewById(R.id.fabBackManageJournal);
 		fabBackManageJournal.setOnClickListener(this);
 	}
 	
@@ -68,6 +85,54 @@ public class ManageJournalsActivity extends AppCompatActivity implements View.On
 		adView.loadAd(adRequest);
 	}
 	
+	
+	private void setExtraDataFromMain()
+	{
+		journalName = getIntent().getStringExtra(MainActivity.JOURNAL_NAME);
+		journalId   = getIntent().getStringExtra(MainActivity.JOURNAL_ID);
+		journalType = getIntent().getStringExtra(MainActivity.JOURNAL_TYPE);
+	}
+	
+	private void setTitleText()
+	{
+		if (journalName != null && journalId != null && journalType != null)
+		{
+			etJournalName.setText(journalName);
+			etJournalType.setText(journalType);
+			ibDeleteJournal.setVisibility(View.VISIBLE);
+			
+//			this.setTitle("Make an entry for " + journalName + "(" + journalId + "):");
+		}
+	}
+	private AlertDialog AskConfirmationBeforeDelete()
+	{
+		AlertDialog confirmationDialog = new AlertDialog.Builder(this)
+		            //set message, title, and icon
+		             .setTitle("Delete")
+		             .setMessage("Do you want to Delete")
+		             .setIcon(R.drawable.ic_launcher_foreground)
+		
+		             .setPositiveButton("Delete", new DialogInterface.OnClickListener()
+		             {
+		                 public void onClick(DialogInterface dialog, int whichButton)
+		                 {
+			                 tryToDeleteJournal();
+		                     dialog.dismiss();
+		                 }
+		             })
+		
+		             .setNegativeButton("cancel", new DialogInterface.OnClickListener()
+		             {
+		                 public void onClick(DialogInterface dialog, int which)
+		                 {
+		                     dialog.dismiss();
+		                 }
+		             })
+		             .create();
+		
+		return confirmationDialog;
+		
+	}
 	
 	private boolean tryToWriteEntryToDb()
 	{
@@ -90,6 +155,25 @@ public class ManageJournalsActivity extends AppCompatActivity implements View.On
 		}
 	}
 	
+	private boolean tryToDeleteJournal()
+	{
+		try
+		{
+			ttrDb.deleteJournal(journalName);
+			
+			startAnActivity(MainActivity.class);
+			
+			Log.d(ACTIVITY_NAME,
+			      journalName + " was deleted.");
+			
+			return true;
+		}
+		catch (Exception ex)
+		{
+			Log.e(ACTIVITY_NAME, ex.toString());
+			return false;
+		}
+	}
 	private void startAnActivity(Class activityClass)
 	{
 		Log.d(ACTIVITY_NAME, "Opening activity: " + activityClass.getSimpleName());
@@ -115,7 +199,13 @@ public class ManageJournalsActivity extends AppCompatActivity implements View.On
 				}
 				
 				break;
-			
+			case R.id.ibDeleteJournal:
+				
+				AlertDialog confirmationDialog = AskConfirmationBeforeDelete();
+				confirmationDialog.show();
+				
+				break;
+				
 			default:
 				
 				Log.d(ACTIVITY_NAME, "default case in onClick (" + id + ")");

@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 	
 	public static String JOURNAL_NAME = "JOURNAL_NAME";
 	public static String JOURNAL_ID   = "JOURNAL_ID";
+	public static String JOURNAL_TYPE = "JOURNAL_TYPE";
 	
 	final String[] from = {Journal.getJournalColumnName(), Journal.getJournalColumnType()};
 	final int[]    to   = {R.id.tvJournalName, R.id.tvJournalType};
@@ -170,10 +171,11 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 		
 		String journalName = cursor.getString(cursor.getColumnIndexOrThrow(Journal.getJournalColumnName()));
 		String journalId   = cursor.getString(cursor.getColumnIndexOrThrow(Journal.getJournalColumnId()));
+		String journalType = cursor.getString(cursor.getColumnIndexOrThrow(Journal.getJournalColumnType()));
 		
 		Toast.makeText(getBaseContext(), journalName + " clicked() ", Toast.LENGTH_SHORT).show();
 		
-		startAnActivity(activityClass, journalName, journalId);
+		startAnActivity(activityClass, journalName, journalId, journalType);
 	}
 	
 	@Override
@@ -230,13 +232,14 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 		startActivity(i);
 	}
 	
-	private void startAnActivity(Class activityClass, String journalName, String journalId)
+	private void startAnActivity(Class activityClass, String journalName, String journalId, String journalType)
 	{
 		Log.d(ACTIVITY_NAME, "Opening activity: " + activityClass.getSimpleName());
 		
 		Intent i = new Intent(this, activityClass);
 		i.putExtra(JOURNAL_NAME, journalName);
 		i.putExtra(JOURNAL_ID, journalId);
+		i.putExtra(JOURNAL_TYPE, journalType);
 		
 		startActivity(i);
 	}

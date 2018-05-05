@@ -84,7 +84,7 @@ public class ThingsToRememberDbAdapter
 	public boolean deleteJournal(String journalName)
 	{
 		return sqlDb.delete(Journal.getJournalTableName(),
-		                    Journal.getJournalColumnName() + "='" + journalName,
+		                    Journal.getJournalColumnName() + "='" + journalName + "'",
 		                    null) > 0;
 	}
 	
