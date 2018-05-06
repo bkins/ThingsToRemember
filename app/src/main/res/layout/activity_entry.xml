@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,6 +14,7 @@
         android:id="@+id/adViewEntry"
         android:layout_width="450dp"
         android:layout_height="53dp"
+        android:layout_marginBottom="8dp"
         android:visibility="visible"
         ads:adSize="SMART_BANNER"
         ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
@@ -25,25 +27,19 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_weight="4"
         android:calendarViewShown="false"
         android:spinnersShown="false"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/etEntry"
+        app:layout_constraintBottom_toBottomOf="@+id/etEntry"
+        app:layout_constraintRight_toRightOf="@id/actMood"
         app:layout_constraintDimensionRatio="w,1:1"
-        app:layout_constraintEnd_toStartOf="@+id/fabBack"
-        app:layout_constraintHorizontal_bias="0.04"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/etEntryDate"
-        app:layout_constraintVertical_bias="1.0" />
+        tools:layout_editor_absoluteX="8dp" />
 
     <!--<EditText-->
     <TextView
         android:id="@+id/etEntryDate"
-        android:layout_width="231dp"
+        android:layout_width="179dp"
         android:layout_height="37dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
@@ -59,8 +55,8 @@
     <EditText
         android:id="@+id/etEntry"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
-        android:layout_width="366dp"
-        android:layout_height="360dp"
+        android:layout_width="336dp"
+        android:layout_height="330dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -68,20 +64,18 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:gravity="top"
         android:hint="@string/entry_hint"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@+id/actMood"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEntryDate"
-        app:layout_constraintVertical_bias="0.636" />
+        app:layout_constraintTop_toBottomOf="@+id/etEntryDate" />
 
     <AutoCompleteTextView
         android:id="@+id/actMood"
         android:layout_width="wrap_content"
         android:layout_height="52dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:hint="@string/mood_hint"

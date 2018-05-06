@@ -24,7 +24,7 @@ public class Mood
 	
 	private static final String CREATE_TABLE_MOOD = CREATE_TABLE +
 			                                                MOOD_TABLE_NAME + " (" +
-			                                                MOOD_COLUMN_ID + INTEGER + PRIMARY + KEY + AUTOINCREMENT +
+			                                                MOOD_COLUMN_ID + INTEGER + PRIMARY + KEY + AUTOINCREMENT + ","  +
 			                                                MOOD_COLUMN_DESCRIPTION + TEXT + NOT + NULL + UNIQUE + ", " +
 			                                                MOOD_COLUMN_IMAGE + TEXT + ")";
 	

@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 			}
 		});
 	}
+	
 	private void displayListView()
 	{
 		lvJournals.setAdapter(getJournalCursorAdapter());

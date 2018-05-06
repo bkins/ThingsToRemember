@@ -24,7 +24,7 @@ public class Entry
 	
 	private static final String CREATE_TABLE_ENTRY = CREATE_TABLE +
 			                                                 ENTRY_TABLE_NAME + " (" +
-			                                                 ENTRY_COLUMN_ID + INTEGER + PRIMARY + KEY + AUTOINCREMENT +
+			                                                 ENTRY_COLUMN_ID + INTEGER + PRIMARY + KEY + AUTOINCREMENT + "," +
 			                                                 ENTRY_COLUMN_DESCRIPTION + TEXT + ", " +
 			                                                 ENTRY_COLUMN_ENTRY_DATE + TEXT + NOT + NULL + ", " +
 			                                                 ENTRY_COLUMN_MOOD_ID + INTEGER + "," +

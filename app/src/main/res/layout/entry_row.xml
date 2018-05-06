@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+
+    <TextView
+        android:id="@+id/tvEntryDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:text=""
+        android:hint="@string/entry_date_hint"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/tvEntry"
+        android:layout_width="258dp"
+        android:layout_height="41dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/tvEntryDate"
+        android:layout_alignLeft="@id/tvEntryDate"
+        android:layout_marginTop="54dp"
+        android:hint="@string/entry_hint"
+        android:text="" />
+
+
+    <TextView
+        android:id="@+id/tvMood"
+        android:layout_width="81dp"
+        android:layout_height="41dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/tvEntry"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:hint="@string/mood_hint"
+        android:text="" />
+
+
+</RelativeLayout>

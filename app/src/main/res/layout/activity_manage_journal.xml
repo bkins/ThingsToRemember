@@ -61,13 +61,14 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
 
+        android:layout_marginTop="8dp"
         android:hint="@string/journal_type"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actInterval" />
+        app:layout_constraintTop_toBottomOf="@+id/etJournalName" />
 
     <EditText
         android:id="@+id/etIntervalAmount"
@@ -81,20 +82,22 @@
         android:ems="10"
         android:hint="@string/interval"
         android:inputType="number"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/actInterval"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etJournalName" />
+        app:layout_constraintTop_toBottomOf="@+id/etJournalType" />
 
     <AutoCompleteTextView
         android:id="@+id/actInterval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
-        android:layout_marginRight="28dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:text="AutoCompleteTextView"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etJournalName" />
+        app:layout_constraintTop_toBottomOf="@+id/etJournalType" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabBackManageJournal"

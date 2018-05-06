@@ -25,7 +25,7 @@ public class Journal
 	
 	private static final String CREATE_TABLE_JOURNAL = CREATE_TABLE +
 			                                                   JOURNAL_TABLE_NAME + " (" +
-			                                                   JOURNAL_COLUMN_ID + INTEGER + PRIMARY + KEY + AUTOINCREMENT +
+			                                                   JOURNAL_COLUMN_ID + INTEGER + PRIMARY + KEY + AUTOINCREMENT + ","  +
 			                                                   JOURNAL_COLUMN_NAME + TEXT + NOT + NULL + UNIQUE + ", " +
 			                                                   JOURNAL_COLUMN_TYPE + TEXT + NOT + NULL + ")";
 	

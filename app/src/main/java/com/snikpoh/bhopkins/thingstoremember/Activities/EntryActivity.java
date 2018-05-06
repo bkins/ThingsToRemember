@@ -22,6 +22,11 @@ import com.google.android.gms.ads.AdView;
 import com.snikpoh.bhopkins.thingstoremember.Database.ThingsToRememberDbAdapter;
 import com.snikpoh.bhopkins.thingstoremember.R;
 
+import java.util.concurrent.CancellationException;
+
+import static com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity.JOURNAL_ID;
+import static com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity.JOURNAL_NAME;
+
 public class EntryActivity extends AppCompatActivity implements View.OnClickListener
 {
 	
@@ -33,6 +38,7 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 	
 	private AdView               adView;
 	private FloatingActionButton fabBack;
+	private FloatingActionButton fabExplore;
 	private EditText             etEntry;
 	private TextView             tvEntryDate;
 	private AutoCompleteTextView actMood;
@@ -86,8 +92,8 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 	
 	private void setExtraDataFromMain()
 	{
-		journalName = getIntent().getStringExtra(MainActivity.JOURNAL_NAME);
-		journalId = getIntent().getStringExtra(MainActivity.JOURNAL_ID);
+		journalName = getIntent().getStringExtra(JOURNAL_NAME);
+		journalId = getIntent().getStringExtra(JOURNAL_ID);
 	}
 	
 	private void setTitleText()
@@ -107,6 +113,9 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 	{
 		fabBack = findViewById(R.id.fabBack);
 		fabBack.setOnClickListener(this);
+		
+		fabExplore = findViewById(R.id.fabExplore);
+		fabExplore.setOnClickListener(this);
 		
 		etEntry = findViewById(R.id.etEntry);
 		actMood = findViewById(R.id.actMood);
@@ -239,7 +248,10 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 				}
 				
 				break;
-			
+			case R.id.fabExplore:
+				
+				startAnActivity(ExploreEntriesActivity.class, journalName, journalId);
+				
 			default:
 				
 				Log.d(ACTIVITY_NAME, "default case in onClick (" + id + ")");
@@ -260,6 +272,17 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		Log.d(ACTIVITY_NAME, "Opening activity: " + activityClass.getSimpleName());
 		
 		Intent i = new Intent(this, activityClass);
+		startActivity(i);
+	}
+	
+	private void startAnActivity(Class activityClass, String journalName, String journalId)
+	{
+		Log.d(ACTIVITY_NAME, "Opening activity: " + activityClass.getSimpleName());
+		
+		Intent i = new Intent(this, activityClass);
+		i.putExtra(JOURNAL_NAME, journalName);
+		i.putExtra(JOURNAL_ID, journalId);
+		
 		startActivity(i);
 	}
 	
@@ -329,6 +352,8 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		Log.d(ACTIVITY_NAME, "onDestroy was called");
 		
 		adView.destroy();
+		
+		ttrDb.closeDb();
 	}
 	
 	

@@ -7,6 +7,7 @@ import android.database.DatabaseErrorHandler;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.media.session.PlaybackState;
 import android.util.Log;
 
 import com.snikpoh.bhopkins.thingstoremember.Utilities.SQL;
@@ -223,9 +224,48 @@ public class ThingsToRememberDbAdapter
 		return fetchEntriesByAnyCriteria(null);
 	}
 	
-	public Cursor fetchEntriesByJournal(String entryID)
+	public Cursor fetchEntriesByEntryID(String entryID)
 	{
 		return fetchEntriesByAnyColumn(Entry.getEntryColumnId(), entryID);
+	}
+	
+	public Cursor fetchEntriesByJournalId(int journalId)
+	{
+		Cursor entries = sqlDb.query(true,
+		                             Entry.getEntryTableName(),
+		                             Entry.getEntryColumnList(),
+		                             Entry.getEntryColumnJournalId() + "=" + journalId,
+		                             null,
+		                             null,
+		                             null,
+		                             null,
+		                             null);
+		if (entries != null)
+		{
+			entries.moveToFirst();
+		}
+		
+		return entries;
+	}
+	public Cursor fetchEntriesByJournalName(String journalName)
+	{
+		int journalId = this.fetchJournalByName(journalName).getColumnIndexOrThrow(Journal.getJournalColumnId());
+		
+		Cursor entries = sqlDb.query(true,
+		                             Entry.getEntryTableName(),
+		                             Entry.getEntryColumnList(),
+		                             Entry.getEntryColumnJournalId() + "=" + journalId,
+		                             null,
+		                             null,
+		                             null,
+		                             null,
+		                             null);
+		if (entries != null)
+		{
+			entries.moveToFirst();
+		}
+		
+		return entries;
 	}
 	
 	public Cursor fetchEntriesByDate(String entryDate)

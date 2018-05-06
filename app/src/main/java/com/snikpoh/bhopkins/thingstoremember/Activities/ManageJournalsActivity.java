@@ -157,6 +157,11 @@ public class ManageJournalsActivity extends AppCompatActivity implements View.On
 	
 	private boolean tryToDeleteJournal()
 	{
+		/*
+		TODO: review swipe-maker code to implement swipe to delete row instead of deleting in
+			  separate activity/
+		  */
+		
 		try
 		{
 			ttrDb.deleteJournal(journalName);
