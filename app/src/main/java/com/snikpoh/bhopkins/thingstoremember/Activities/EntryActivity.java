@@ -3,6 +3,7 @@ package com.snikpoh.bhopkins.thingstoremember.Activities;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,22 +13,26 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.snikpoh.bhopkins.thingstoremember.Database.Mood;
 import com.snikpoh.bhopkins.thingstoremember.Database.ThingsToRememberDbAdapter;
 import com.snikpoh.bhopkins.thingstoremember.R;
 
-import java.util.concurrent.CancellationException;
+import java.util.ArrayList;
 
 import static com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity.JOURNAL_ID;
 import static com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity.JOURNAL_NAME;
 
-public class EntryActivity extends AppCompatActivity implements View.OnClickListener
+public class EntryActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener
 {
 	
 	static final int DATE_DIALOG_ID = 999;
@@ -43,6 +48,7 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 	private TextView             tvEntryDate;
 	private AutoCompleteTextView actMood;
 	private DatePicker           dpEntryDate;
+	private Spinner              spinnerMood;
 	
 	private ThingsToRememberDbAdapter ttrDb;
 	
@@ -88,6 +94,13 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		
 		setExtraDataFromMain();
 		setTitleText();
+		
+		//TODO:  Remove this!!
+		//loadMoodsTestData();
+		
+		
+		initializeSpinner();
+		
 	}
 	
 	private void setExtraDataFromMain()
@@ -123,9 +136,11 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		tvEntryDate = findViewById(R.id.etEntryDate);
 		dpEntryDate = findViewById(R.id.dpEntryDate);
 		
+		spinnerMood = findViewById(R.id.spinnerMood);
+		
 		setCurrentDateOnView();
 		addListenerOnButton();
-
+		
 //		fabAddJournal  = findViewById(R.id.fabAddJournal);
 //		ivJournalImage = findViewById(R.id.ivJournalImage);
 //		lvJournals     = findViewById(R.id.lvJournals);
@@ -205,7 +220,7 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		{
 			ttrDb.insertIntoEntry(etEntry.getText().toString(),
 			                      tvEntryDate.getText().toString(),
-			                      actMood.getText().toString(),
+			                      spinnerMood.getSelectedItem().toString(),
 			                      journalId);
 			
 			Log.d(ACTIVITY_NAME,
@@ -292,6 +307,64 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		ttrDb.open();
 	}
 	
+	private void loadMoodsTestData()
+	{
+		ttrDb.createMood("Happy", "happyImage");
+		ttrDb.createMood("Sad", "SadImage");
+		ttrDb.createMood("Mad", "MadImage");
+		ttrDb.createMood("Excited", "ExcitedImage");
+		ttrDb.createMood("Shocked", "ShockedImage");
+	}
+	
+	public String[] getAllMoods()
+	{
+		Cursor moods = ttrDb.fetchAllMoods();
+		
+		ArrayList<String> descriptions = new ArrayList<>();
+		
+		while( ! moods.isAfterLast())
+		{
+			descriptions.add(moods.getString(moods.getColumnIndex(Mood.getColumnDescription())));
+			moods.moveToNext();
+		}
+		
+		moods.close();
+		
+		return descriptions.toArray(new String[descriptions.size()]);
+	}
+	
+	@Override
+	public void onBackPressed()
+	{
+		super.onBackPressed();
+		startAnActivity(MainActivity.class);
+	}
+	
+	private void initializeSpinner()
+	{
+		String[] moods = getAllMoods();
+		
+		spinnerMood = findViewById(R.id.spinnerMood);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+		                                                        android.R.layout.simple_spinner_item,
+		                                                        moods);
+		
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerMood.setAdapter(adapter);
+		spinnerMood.setOnItemSelectedListener(this);
+	}
+	
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+	{
+	
+	}
+	
+	@Override
+	public void onNothingSelected(AdapterView<?> parent)
+	{
+	
+	}
 	
 	//region Activity States
 	

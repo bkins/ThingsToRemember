@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.snikpoh.bhopkins.thingstoremember.Database.Entry;
-import com.snikpoh.bhopkins.thingstoremember.Database.Journal;
 import com.snikpoh.bhopkins.thingstoremember.Database.ThingsToRememberDbAdapter;
 import com.snikpoh.bhopkins.thingstoremember.R;
 
@@ -38,7 +35,7 @@ public class ExploreEntriesActivity extends AppCompatActivity
 	private ThingsToRememberDbAdapter ttrDb;
 	private SimpleCursorAdapter       cursorAdapter;
 	
-	final String[] from = {Entry.getEntryColumnEntryDate(), Entry.getEntryColumnDescription(), Entry.getEntryColumnMoodId()};
+	final String[] from = {Entry.getColumnEntryDate(), Entry.getColumnDescription(), Entry.getColumnMoodId()};
 	final int[]    to   = {R.id.tvEntryDate, R.id.tvEntry, R.id.tvMood};
 	
 	String journalName;

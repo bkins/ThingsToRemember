@@ -3,28 +3,12 @@
     <string name="KEY_NAME">NAME</string>
     <string name="KEY_ORG">ORG</string>
     <string name="a_journal">A Journal</string>
-    <string name="adMod_App_Id">ca-app-pub-1259969651432104~4839144088</string>string>
-    <!--<string name="adMod_App_Id" >ca-app-pub-1259969651432104/1909728411</string>-->
+
     <string name="entry_date_hint">Entry Date</string>
     <string name="entry_hint">Entry</string>
     <string name="mood_hint">Mood</string>
     <string name="journal_name">Journal Name</string>
     <string name="interval">Interval</string>
     <string name="journal_type">Journal Type</string>
-
-    <!--Set the appropriate ID to ads:adUnitId tag-->
-    <!--TEST ID: ca-app-pub-3940256099942544/6300978111-->
-    <!--PROD ID: ca-app-pub-1259969651432104/1909728411-->
-
-    <!--
-    Complete the instructions in the Google Mobile Ads SDK guide using this app ID:
-
-    Things to Remember
-    ca-app-pub-1259969651432104~4839144088
-    Follow the banner implementation guide to integrate the SDK. You'll specify ad type, size, and placement when you integrate the code using this ad unit ID:
-
-    Main Promo
-    ca-app-pub-1259969651432104/1909728411
-    Review the AdMob policies to ensure your implementation complies.-->
 
 </resources>

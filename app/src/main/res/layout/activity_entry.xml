@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.snikpoh.bhopkins.thingstoremember.Activities.EntryActivity">
+    tools:context="com.snikpoh.bhopkins.thingstoremember.Activities.EntryActivity"
+    android:parentActivityName="com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity"
+    >
 
     <com.google.android.gms.ads.AdView
 
@@ -75,10 +77,21 @@
         android:id="@+id/actMood"
         android:layout_width="wrap_content"
         android:layout_height="52dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
         android:hint="@string/mood_hint"
+        app:layout_constraintBottom_toTopOf="@+id/adViewEntry"
+        app:layout_constraintStart_toEndOf="@+id/spinnerMood" />
+
+    <Spinner
+        android:id="@+id/spinnerMood"
+        android:layout_width="107dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="12dp"
+
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
         app:layout_constraintBottom_toTopOf="@+id/adViewEntry"
         app:layout_constraintStart_toStartOf="parent" />
 

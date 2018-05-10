@@ -48,27 +48,27 @@ public class Mood
 		this.image = image;
 	}
 	
-	public static String getMoodTableName()
+	public static String getTableName()
 	{
 		return MOOD_TABLE_NAME;
 	}
 	
-	public static String getMoodColumnId()
+	public static String getColumnId()
 	{
 		return MOOD_COLUMN_ID;
 	}
 
-	public static String getMoodColumnDescription()
+	public static String getColumnDescription()
 	{
 		return MOOD_COLUMN_DESCRIPTION;
 	}
 	
-	public static String getMoodColumnImage()
+	public static String getColumnImage()
 	{
 		return MOOD_COLUMN_IMAGE;
 	}
 	
-	public static String[] getMoodColumnList()
+	public static String[] getColumnList()
 	{
 		return MOOD_COLUMN_LIST;
 	}
@@ -78,7 +78,7 @@ public class Mood
 		return CREATE_TABLE_MOOD;
 	}
 	
-	public static String getDropTableMood()
+	public static String getDropTableStatement()
 	{
 		return DROP_TABLE_MOOD;
 	}

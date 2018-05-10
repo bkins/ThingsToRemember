@@ -32,48 +32,39 @@ public class Entry
 	
 	private static final String DROP_TABLE_ENTRY = DROP_TABLE + IF_EXISTS + ENTRY_TABLE_NAME;
 	
-	private String description;
-	private Date   entryDate;
-	private String mood;
-	
-	public static String getEntryTableName()
+	public static String getTableName()
 	{
 		return ENTRY_TABLE_NAME;
 	}
 	
-	public static String getEntryColumnId()
+	public static String getColumnId()
 	{
 		return ENTRY_COLUMN_ID;
 	}
 	
-	public static String getEntryColumnDescription()
+	public static String getColumnDescription()
 	{
 		return ENTRY_COLUMN_DESCRIPTION;
 	}
 	
-	public static String getEntryColumnEntryDate()
+	public static String getColumnEntryDate()
 	{
 		return ENTRY_COLUMN_ENTRY_DATE;
 	}
 	
-	public static String getEntryColumnMoodId()
+	public static String getColumnMoodId()
 	{
 		return ENTRY_COLUMN_MOOD_ID;
 	}
 	
-	public static String getEntryColumnJournalId()
+	public static String getColumnJournalId()
 	{
 		return ENTRY_COLUMN_JOURNAL_ID;
 	}
 	
-	public static String[] getEntryColumnList()
+	public static String[] getColumnList()
 	{
 		return ENTRY_COLUMN_LIST;
-	}
-	
-	public static String getCreateTableEntry()
-	{
-		return CREATE_TABLE_ENTRY;
 	}
 	
 	public static String getCreateTableStatement()
@@ -81,39 +72,9 @@ public class Entry
 		return CREATE_TABLE_ENTRY;
 	}
 	
-	public static String getDropTableEntry()
+	public static String getDropTableStatement()
 	{
 		return DROP_TABLE_ENTRY;
-	}
-	
-	public String getDescription()
-	{
-		return description;
-	}
-	
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
-	
-	public Date getEntryDate()
-	{
-		return entryDate;
-	}
-	
-	public void setEntryDate(Date entryDate)
-	{
-		this.entryDate = entryDate;
-	}
-	
-	public String getMood()
-	{
-		return mood;
-	}
-	
-	public void setMood(String mood)
-	{
-		this.mood = mood;
 	}
 	
 }
