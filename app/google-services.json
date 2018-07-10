@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "991852605289",
+    "firebase_url": "https://thingstoremember-b20f2.firebaseio.com",
+    "project_id": "thingstoremember-b20f2",
+    "storage_bucket": "thingstoremember-b20f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991852605289:android:5b6619069a6a3ec8",
+        "android_client_info": {
+          "package_name": "com.snikpoh.bhopkins.thingstoremember"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991852605289-3u3is5iha67id8ple66rsn64k8ennpb8.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "991852605289-3u3is5iha67id8ple66rsn64k8ennpb8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDT0s846SO_-glm17M_YurYnRtklXokrD0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -134,8 +135,23 @@ public class ManageJournalsActivity extends AppCompatActivity implements View.On
 		
 	}
 	
+	private boolean validateJournal()
+	{
+		if (etJournalName.getText().toString().equals(""))
+		{
+			
+			Toast.makeText(getBaseContext(), "Please provide a Journal Name.", Toast.LENGTH_SHORT).show();
+			
+			Log.d(ACTIVITY_NAME, "Please provide a Journal Name.");
+			return false;
+		}
+		return true;
+	}
+	
 	private boolean tryToWriteEntryToDb()
 	{
+		if ( ! validateJournal()) {return false;}
+		
 		try
 		{
 			ttrDb.insertJournal(etJournalName.getText().toString(),
@@ -164,14 +180,18 @@ public class ManageJournalsActivity extends AppCompatActivity implements View.On
 		
 		try
 		{
-			ttrDb.deleteJournal(journalName);
+			if (ttrDb.deleteJournal(Integer.parseInt(journalId)))
+			{
+				startAnActivity(MainActivity.class);
+				
+				Log.d(ACTIVITY_NAME,
+				      journalName + " was deleted.");
+				
+				return true;
+			}
 			
-			startAnActivity(MainActivity.class);
-			
-			Log.d(ACTIVITY_NAME,
-			      journalName + " was deleted.");
-			
-			return true;
+			Log.e(ACTIVITY_NAME, "The journal " + journalName + " was not deleted for some unknown reason(s).");
+			return false;
 		}
 		catch (Exception ex)
 		{
@@ -185,6 +205,8 @@ public class ManageJournalsActivity extends AppCompatActivity implements View.On
 		
 		Intent i = new Intent(this, activityClass);
 		startActivity(i);
+		
+		finish();
 	}
 	
 //	View.OnLongClickListener
@@ -225,6 +247,15 @@ public class ManageJournalsActivity extends AppCompatActivity implements View.On
 	{
 		return false;
 	}
+	
+	
+	@Override
+	public void onBackPressed()
+	{
+		super.onBackPressed();
+		startAnActivity(MainActivity.class);
+	}
+	
 	//region Activity States
 	
 	@Override

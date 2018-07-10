@@ -2,33 +2,44 @@ package com.snikpoh.bhopkins.thingstoremember.Activities;
 
 // region TO-DO list
 /*
-* Requirement : 1)  Need to delete by Journal ID instead of Name
 * Requirement : 2)  Implement emojis to be associated with Moods
 * Requirement :           1)  Display emojis in Mood Spinner
 * Requirement :           2)  Create new Activity for managing Moods
 * Requirement : 3)  In the ExploreEntriesActivity sort Entries by date in DESC order
-* Requirement : 4)  Figure why back button is not simply going back an activity, and then exiting when it gets to the main activity
 * Requirement : 5)  Implement Service to find entries that happened a year ago and send notification
-* Requirement : 6)  Do not allow adding of "empty" entries or journals
 * Requirement : 7)  Reordering flow: Main -> Explore, click '+' -> Entry
-* Requirement :         1) An "Add" button instead of having the entry added when the <- is pressed
+* Requirement :         1) And "Add" button instead of having the entry added when the <- is pressed
+* Requirement : 8)  Sync DB with users google account <- Answer: https://stackoverflow.com/a/25894972/431319
 *
 * Look/Feel : 1) Implement swipe to delete Journals (and entries?)
-* Look/Feel : 2) In the ExploreEntriesActivity the Entry and Mood fields are crowded * Look/Feel : 3) Move Preference button up to the title bar
+* Look/Feel : 2) In the ExploreEntriesActivity the Entry and Mood fields are crowded
+* Look/Feel : 3) Move Preference button up to the title bar
 *
+*  Consider : 3) Implementing user managed list of Journal Types.  Like how will be doing Moods
+ * Consider :        1)  Implement in the ManageJournalsActivity.
+ * Consider : 4) Instead of creating a new activity for managing Moods, create a way to add them from the entry screen
+ * Consider : 5) Figure out/google better way to implement DB schema
+ * Consider : 6) A way to have full screen ads that won't be too distracting/annoying (Maybe before creating a new journal)
+ *
+ * Optional : 1) Implement ActionBar back buttons in all activities
+ *
+ * *Future to-dos are to be made Requirements after the release of v1.0
+ *
  * Future : 1)    Implement custom images on journals (Main Activity)
  *
-* Consider : 3) Implementing user managed list of Journal Types.  Like how will be doing Moods
-* Consider :        1)  Implement in the ManageJournalsActivity.
-* Consider : 4) Instead of creating a new activity for managing Moods, create a way to add them from the entry screen
-* Consider : 5) Figure out/google better way to implement DB schema
-* Consider : 6) A way to have full screen ads that won't be too distracting/annoying
-*
-* Optional : 1) Implement ActionBar back buttons in all activities
-*
-* *Future to-dos are to be made Requirements after the release of v1.0
-*
+ *
 * */
+
+//region to-DONE (Code-complete) List
+/*
+*
+* DONE : 5/10/2018 : Requirement : 1)  Need to delete by Journal ID instead of Name
+* DONE : 5/10/2018 : Requirement : 4)  Figure why back button is not simply going back an activity, and then not exiting when it gets to the main activity
+* DONE : 5/10/2018 : Requirement : 6)  Do not allow adding of "empty" entries or journals
+*/
+
+
+//endregion
 //endregion
 
 import android.content.Context;
@@ -51,8 +62,9 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.snikpoh.bhopkins.thingstoremember.BuildConfig;
-import com.snikpoh.bhopkins.thingstoremember.Database.Journal;
+import com.snikpoh.bhopkins.thingstoremember.Database.JournalSql;
 import com.snikpoh.bhopkins.thingstoremember.Database.ThingsToRememberDbAdapter;
 import com.snikpoh.bhopkins.thingstoremember.R;
 
@@ -64,12 +76,13 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 	public static String JOURNAL_ID   = "JOURNAL_ID";
 	public static String JOURNAL_TYPE = "JOURNAL_TYPE";
 	
-	final String[] from = {Journal.getColumnName(), Journal.getColumnType()};
+	final String[] from = {JournalSql.getColumnName(), JournalSql.getColumnType()};
 	final int[]    to   = {R.id.tvJournalName, R.id.tvJournalType};
 	
 	ListView lvJournals;
 	
 	private AdView adView;
+	
 	
 	private FloatingActionButton fabPreferences;
 	private FloatingActionButton fabAddJournal;
@@ -79,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 	private SimpleCursorAdapter       cursorAdapter;
 	private boolean adMobKey;
 	
+	private GoogleSignInClient googleSignInClient;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -101,6 +115,12 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 	public View onCreateView(String name, Context context, AttributeSet attrs)
 	{
 		return super.onCreateView(name, context, attrs);
+	}
+	
+	@Override
+	public View onCreateView(View parent, String name, Context context, AttributeSet attrs)
+	{
+		return super.onCreateView(parent, name, context, attrs);
 	}
 	
 	private void loadTestData()
@@ -144,23 +164,35 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 	private void loadAdView(int adViewID)
 	{
 		//How to create the BuildConfig.AdMobId: https://medium.com/code-better/hiding-api-keys-from-your-android-repository-b23f5598b906
+		//Actual keys stored here: C:\Users\bhopkins\.gradle\gradle.properties
 		
-		MobileAds.initialize(this,
-		                     BuildConfig.AdMobId);
-
+//		MobileAds.initialize(this, BuildConfig.AdMobId);
+		MobileAds.initialize(this);
+		MobileAds.openDebugMenu(this, BuildConfig.AdMobId);
+		
         adView = findViewById(adViewID);
-		AdRequest adRequest = new AdRequest.Builder().build();
+        
+		AdRequest adRequest = new AdRequest.Builder().addTestDevice("9AB1505C31BD1EC595092BA76D781E8E").build();
+//		AdRequest adRequest = new AdRequest.Builder().build();
 		adView.loadAd(adRequest);
 	}
 	
 	private void listViewOnClick()
 	{
+//		lvJournals.setOnItemClickListener(new  AdapterView.OnItemClickListener()
+//		{
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+//			{
+//				onClickOfJournalItem(position, EntryActivity.class);
+//			}
+//		});
 		lvJournals.setOnItemClickListener(new  AdapterView.OnItemClickListener()
 		{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				onClickOfJournalItem(position, EntryActivity.class);
+				onClickOfJournalItem(position, ExploreEntriesActivity.class);
 			}
 		});
 	}
@@ -180,16 +212,27 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 	
 	private void displayListView()
 	{
-		lvJournals.setAdapter(getJournalCursorAdapter());
+		lvJournals.setAdapter(getJournalCursorAdapter());  //getJournalArrayAdapter()); //
 		
 		listViewOnClick();
 		listViewOnLongClick();
 	}
 	
+//	private ArrayAdapter getJournalArrayAdapter()
+//	{
+//		ArrayList<Journal> journals = ttrDb.getAllJournals();
+//
+//		ArrayAdapter<Journal> journalArrayAdapter = new ArrayAdapter<>(this,
+//		                                                               R.layout.journal_row,
+//		                                                               journals);
+//		return journalArrayAdapter;
+//	}
+	
 	private SimpleCursorAdapter getJournalCursorAdapter()
 	{
+
 		Cursor journalData = ttrDb.fetchAllJournals();
-		
+
 		cursorAdapter = new SimpleCursorAdapter(this,
 		                                        R.layout.journal_row,
 		                                        journalData,
@@ -203,9 +246,9 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 	{
 		Cursor cursor = (Cursor) lvJournals.getItemAtPosition(position);
 		
-		String journalName = cursor.getString(cursor.getColumnIndexOrThrow(Journal.getColumnName()));
-		String journalId   = cursor.getString(cursor.getColumnIndexOrThrow(Journal.getColumnId()));
-		String journalType = cursor.getString(cursor.getColumnIndexOrThrow(Journal.getColumnType()));
+		String journalName = cursor.getString(cursor.getColumnIndexOrThrow(JournalSql.getColumnName()));
+		String journalId   = cursor.getString(cursor.getColumnIndexOrThrow(JournalSql.getColumnId()));
+		String journalType = cursor.getString(cursor.getColumnIndexOrThrow(JournalSql.getColumnType()));
 		
 		Toast.makeText(getBaseContext(), journalName + " clicked() ", Toast.LENGTH_SHORT).show();
 		
@@ -221,7 +264,8 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 		{
 			case R.id.fabPreferences:
 				
-				startAnActivity(AppPreferencesActivity.class);
+				//TODO: Create Preference screen
+				//startAnActivity(AppPreferencesActivity.class);
 				
 				break;
 			
@@ -254,6 +298,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 		
 		Intent i = new Intent(this, activityClass);
 		startActivity(i);
+		finish();
 	}
 	
 	private void startAnActivity(Class activityClass, String journalName)
@@ -261,9 +306,10 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 		Log.d(ACTIVITY_NAME, "Opening activity: " + activityClass.getSimpleName());
 		
 		Intent i = new Intent(this, activityClass);
-		i.putExtra(Journal.getColumnName(), journalName);
+		i.putExtra(JournalSql.getColumnName(), journalName);
 		
 		startActivity(i);
+		finish();
 	}
 	
 	private void startAnActivity(Class activityClass, String journalName, String journalId, String journalType)
@@ -276,6 +322,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 		i.putExtra(JOURNAL_TYPE, journalType);
 		
 		startActivity(i);
+		finish();
 	}
 	
 	protected void onButtonClick(View view)
@@ -288,6 +335,13 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 //			tv.setTextSize(40);
 //			tv.setTextColor(getResources().getColor(R.color.myCustomColor));
 //		}
+		
+	}
+	
+	@Override
+	public void onBackPressed()
+	{
+		super.onBackPressed();
 		
 	}
 	

@@ -1,76 +1,74 @@
 package com.snikpoh.bhopkins.thingstoremember.Database;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-import com.snikpoh.bhopkins.thingstoremember.Utilities.SQL;
-
-import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.AUTOINCREMENT;
-import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.CREATE_TABLE;
-import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.DROP_TABLE;
-import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.IF_EXISTS;
-import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.INTEGER;
-import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.KEY;
-import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.NOT;
-import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.NULL;
-import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.PRIMARY;
-import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.TEXT;
-import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.UNIQUE;
-
 public class Journal
 {
+	//region Data Members
 	
-	private static final String JOURNAL_TABLE_NAME = "Journals";
+	private int    _id;
+	private String _name;
+	private String _type;
 	
-	private static final String JOURNAL_COLUMN_ID   = "_id";
-	private static final String JOURNAL_COLUMN_NAME = "Name";
-	private static final String JOURNAL_COLUMN_TYPE = "Type";
-	private static final String[] JOURNAL_COLUMN_LIST = new String[]{JOURNAL_COLUMN_ID,
-	                                                                 JOURNAL_COLUMN_NAME,
-	                                                                 JOURNAL_COLUMN_TYPE};
+	//endregion Data Members
 	
-	private static final String CREATE_TABLE_JOURNAL = CREATE_TABLE +
-			                                                   JOURNAL_TABLE_NAME + " (" +
-			                                                   JOURNAL_COLUMN_ID + INTEGER + PRIMARY + KEY + AUTOINCREMENT + ","  +
-			                                                   JOURNAL_COLUMN_NAME + TEXT + NOT + NULL + UNIQUE + ", " +
-			                                                   JOURNAL_COLUMN_TYPE + TEXT + NOT + NULL + ")";
+	//region Getters and Setters
 	
-	private static final String DROP_TABLE_JOURNAL = DROP_TABLE + IF_EXISTS + JOURNAL_TABLE_NAME;
-	
-	public static String getTableName()
+	public int getId()
 	{
-		return JOURNAL_TABLE_NAME;
+		return _id;
 	}
 	
-	public static String[] getColumnList()
+	public void setId(int id)
 	{
-		return JOURNAL_COLUMN_LIST;
+		this._id = id;
 	}
 	
-	public static String getColumnId()
+	public String getName()
 	{
-		return JOURNAL_COLUMN_ID;
-	}
-
-	public static String getColumnName()
-	{
-		return JOURNAL_COLUMN_NAME;
+		return _name;
 	}
 	
-	public static String getColumnType()
+	public void setName(String name)
 	{
-		return JOURNAL_COLUMN_TYPE;
+		this._name = name;
 	}
 	
-	public static String getCreateTableStatement()
+	public String getType()
 	{
-		return CREATE_TABLE_JOURNAL;
+		return _type;
 	}
 	
-	public static String getDropTableStatement()
+	public void setType(String type)
 	{
-		return DROP_TABLE_JOURNAL;
+		this._type = type;
 	}
 	
+	//endregion Getters and Setters
+	
+	//region Constructors
+	
+	public Journal()
+	{
+	
+	}
+	
+	public Journal(String name)
+	{
+		this._name = name;
+	}
+	
+	public Journal(String name, String type)
+	{
+		this._name = name;
+		this._type = type;
+	}
+	
+	public Journal(int id, String name, String type)
+	{
+		this._id = id;
+		this._name = name;
+		this._type = type;
+	}
+	
+	//endregion Constructors
 	
 }

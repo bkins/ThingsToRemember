@@ -17,7 +17,7 @@ public class MyListViewActivity extends AppCompatActivity
 	static final String KEY_ORG  = String.valueOf(R.string.KEY_ORG);
 	
 	static String[] from = {KEY_NAME, KEY_ORG};
-	static int[]    to   = {R.id.personName, R.id.personOrg};
+	//tatic int[]    to   = {R.id.personName, R.id.personOrg};
 	
 	ListView lv;
 	

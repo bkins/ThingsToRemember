@@ -4,32 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:animateLayoutChanges="true"
     >
 
 
     <TextView
         android:id="@+id/tvEntryDate"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="10dp"
-        android:text=""
         android:hint="@string/entry_date_hint"
+        android:text=""
         android:textColor="@color/colorPrimaryDark"
         android:textSize="20dp"
         android:textStyle="bold" />
 
-
+    <!---->
     <TextView
         android:id="@+id/tvEntry"
-        android:layout_width="258dp"
+        android:layout_width="223dp"
         android:layout_height="41dp"
+        android:layout_alignLeft="@id/tvEntryDate"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/tvEntryDate"
-        android:layout_alignLeft="@id/tvEntryDate"
         android:layout_marginTop="54dp"
+        android:alpha="10"
+        android:ellipsize="none"
+        android:fadingEdgeLength="240dp"
         android:hint="@string/entry_hint"
+        android:requiresFadingEdge="horizontal"
+        android:singleLine="true"
         android:text="" />
 
 
@@ -43,6 +48,14 @@
         android:layout_marginEnd="21dp"
         android:layout_marginRight="21dp"
         android:hint="@string/mood_hint"
+        android:text="" />
+
+
+    <TextView
+        android:id="@+id/tvEntryId"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
         android:text="" />
 
 

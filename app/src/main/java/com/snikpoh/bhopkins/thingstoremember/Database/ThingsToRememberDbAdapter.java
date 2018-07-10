@@ -9,6 +9,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.text.*;
+import java.util.List;
+
 import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.*;
 
 public class ThingsToRememberDbAdapter
@@ -58,12 +64,12 @@ public class ThingsToRememberDbAdapter
 	{
 		ContentValues rowValues = new ContentValues();
 		
-		rowValues.put(Journal.getColumnName(), journalName);
-		rowValues.put(Journal.getColumnType(), journalType);
+		rowValues.put(JournalSql.getColumnName(), journalName);
+		rowValues.put(JournalSql.getColumnType(), journalType);
 		
 		Log.d(LOG_TAG, "Inserting: " + journalName + " (" + journalType + ")");
 		
-		return sqlDb.insert(Journal.getTableName(), null, rowValues);
+		return sqlDb.insert(JournalSql.getTableName(), null, rowValues);
 	}
 	
 	public boolean updateJournal(String journalName,
@@ -71,24 +77,46 @@ public class ThingsToRememberDbAdapter
 	{
 		ContentValues typeValue = new ContentValues();
 		
-		typeValue.put(Journal.getColumnType(), journalType);
+		typeValue.put(JournalSql.getColumnType(), journalType);
 		
-		return sqlDb.update(Journal.getTableName(),
+		return sqlDb.update(JournalSql.getTableName(),
 		                    typeValue,
-		                    Journal.getColumnName() + "='" + journalName + "'",
+		                    JournalSql.getColumnName() + "='" + journalName + "'",
 		                    null) > 0;
+	}
+	
+	private int convertDateStringToInt(String dateAsString) throws ParseException
+	{
+		SimpleDateFormat    formatter = new SimpleDateFormat("dd/MM/yyy");
+		Date date = formatter.parse(dateAsString);
+		
+		return (int) date.getTime();
+	}
+	
+	public boolean deleteJournal(int journalId)
+	{
+		try
+		{
+			return sqlDb.delete(JournalSql.getTableName(),
+			                    JournalSql.getColumnId() + "=" + journalId,
+			                    null) > 0;
+		}
+		catch (SQLException sEx)
+		{
+			throw sEx;
+		}
 	}
 	
 	public boolean deleteJournal(String journalName)
 	{
-		return sqlDb.delete(Journal.getTableName(),
-		                    Journal.getColumnName() + "='" + journalName + "'",
+		return sqlDb.delete(JournalSql.getTableName(),
+		                    JournalSql.getColumnName() + "='" + journalName + "'",
 		                    null) > 0;
 	}
 	
 	public boolean deleteAllJournals()
 	{
-		long result = sqlDb.delete(Journal.getTableName(),
+		long result = sqlDb.delete(JournalSql.getTableName(),
 		                           null,
 		                           null);
 		if (result > 0)
@@ -110,8 +138,8 @@ public class ThingsToRememberDbAdapter
 	
 	public Cursor fetchAllJournals()
 	{
-		return sqlDb.query(Journal.getTableName(),
-		                   Journal.getColumnList(),
+		return sqlDb.query(JournalSql.getTableName(),
+		                   JournalSql.getColumnList(),
 		                   null,
 		                   null,
 		                   null,
@@ -119,12 +147,12 @@ public class ThingsToRememberDbAdapter
 		                   null);
 	}
 	
-	public Cursor fetchJournalByName(String journalName)
+	private Cursor fetchJournalByName(String journalName)
 	{
 		Cursor journal = sqlDb.query(true,
-		                             Journal.getTableName(),
-		                             Journal.getColumnList(),
-		                             Journal.getColumnName() + "='" + journalName + "'",
+		                             JournalSql.getTableName(),
+		                             JournalSql.getColumnList(),
+		                             JournalSql.getColumnName() + "='" + journalName + "'",
 		                             null,
 		                             null,
 		                             null,
@@ -138,12 +166,12 @@ public class ThingsToRememberDbAdapter
 		return journal;
 	}
 	
-	public Cursor fetchJournalByType(String journalType)
+	private Cursor fetchJournalByType(String journalType)
 	{
 		Cursor journals = sqlDb.query(true,
-		                              Journal.getTableName(),
-		                              Journal.getColumnList(),
-		                              Journal.getColumnType() + "='" + journalType + "'",
+		                              JournalSql.getTableName(),
+		                              JournalSql.getColumnList(),
+		                              JournalSql.getColumnType() + "='" + journalType + "'",
 		                              null,
 		                              null,
 		                              null,
@@ -173,17 +201,19 @@ public class ThingsToRememberDbAdapter
 		
 		ContentValues rowValues = new ContentValues();
 		
-		rowValues.put(Entry.getColumnDescription(), entryDescription);
-		rowValues.put(Entry.getColumnEntryDate(), entryDate);
-		rowValues.put(Entry.getColumnMoodId(), entryMoodId);
-		rowValues.put(Entry.getColumnJournalId(), entryJournalId);
+		//int dateAsInt = convertDateStringToInt(entryDate);
 		
-		Log.d(LOG_TAG, "Inserting into Entry :: Date: " + entryDate +
+		rowValues.put(EntrySql.getColumnDescription(), entryDescription);
+		rowValues.put(EntrySql.getColumnEntryDate(), entryDate);
+		rowValues.put(EntrySql.getColumnMoodId(), entryMoodId);
+		rowValues.put(EntrySql.getColumnJournalId(), entryJournalId);
+		
+		Log.d(LOG_TAG, "Inserting into Entry :: Date: " + entryDate + "(Converted to: " + entryDate +
 				               ", Description: " + entryDescription +
 				               ", MoodId: " + entryMoodId +
 				               ", JournalId: " + entryJournalId + ".");
 		
-		return sqlDb.insert(Entry.getTableName(), null, rowValues);
+		return sqlDb.insert(EntrySql.getTableName(), null, rowValues);
 	}
 	
 	public boolean updateJournal(String entryID,
@@ -193,43 +223,43 @@ public class ThingsToRememberDbAdapter
 	{
 		ContentValues rowValues = new ContentValues();
 		
-		rowValues.put(Entry.getColumnDescription(), entryDescription);
-		rowValues.put(Entry.getColumnEntryDate(), entryDate);
-		rowValues.put(Entry.getColumnMoodId(), entryMoodId);
+		rowValues.put(EntrySql.getColumnDescription(), entryDescription);
+		rowValues.put(EntrySql.getColumnEntryDate(), entryDate);
+		rowValues.put(EntrySql.getColumnMoodId(), entryMoodId);
 		
-		return sqlDb.update(Entry.getTableName(),
+		return sqlDb.update(EntrySql.getTableName(),
 		                    rowValues,
-		                    Entry.getColumnId() + "='" + entryID + "'",
+		                    EntrySql.getColumnId() + "='" + entryID + "'",
 		                    null) > 0;
 	}
 	
 	public boolean deleteEntry(String entryID)
 	{
-		return sqlDb.delete(Entry.getTableName(),
-		                    Entry.getColumnId() + "='" + entryID,
+		return sqlDb.delete(EntrySql.getTableName(),
+		                    EntrySql.getColumnId() + "='" + entryID,
 		                    null) > 0;
 	}
 	
-	public Cursor fetchAllEntries()
+	private Cursor fetchAllEntries()
 	{
 		return fetchEntriesByAnyCriteria(null);
 	}
 	
-	public Cursor fetchEntriesByEntryID(String entryID)
+	private Cursor fetchEntriesByEntryID(String entryID)
 	{
-		return fetchEntriesByAnyColumn(Entry.getColumnId(), entryID);
+		return fetchEntriesByAnyColumn(EntrySql.getColumnId(), entryID);
 	}
 	
 	public Cursor fetchEntriesByJournalId(int journalId)
 	{
 		Cursor entries = sqlDb.query(true,
-		                             Entry.getTableName(),
-		                             Entry.getColumnList(),
-		                             Entry.getColumnJournalId() + "=" + journalId,
+		                             EntrySql.getTableName(),
+		                             EntrySql.getColumnList(),
+		                             EntrySql.getColumnJournalId() + "=" + journalId,
 		                             null,
 		                             null,
 		                             null,
-		                             null,
+		                             EntrySql.getColumnEntryDate() + DESC,
 		                             null);
 		if (entries != null)
 		{
@@ -238,14 +268,14 @@ public class ThingsToRememberDbAdapter
 		
 		return entries;
 	}
-	public Cursor fetchEntriesByJournalName(String journalName)
+	private Cursor fetchEntriesByJournalName(String journalName)
 	{
-		int journalId = this.fetchJournalByName(journalName).getColumnIndexOrThrow(Journal.getColumnId());
+		int journalId = this.fetchJournalByName(journalName).getColumnIndexOrThrow(JournalSql.getColumnId());
 		
 		Cursor entries = sqlDb.query(true,
-		                             Entry.getTableName(),
-		                             Entry.getColumnList(),
-		                             Entry.getColumnJournalId() + "=" + journalId,
+		                             EntrySql.getTableName(),
+		                             EntrySql.getColumnList(),
+		                             EntrySql.getColumnJournalId() + "=" + journalId,
 		                             null,
 		                             null,
 		                             null,
@@ -259,21 +289,21 @@ public class ThingsToRememberDbAdapter
 		return entries;
 	}
 	
-	public Cursor fetchEntriesByDate(String entryDate)
+	private Cursor fetchEntriesByDate(String entryDate)
 	{
-		return fetchEntriesByAnyColumn(Entry.getColumnEntryDate(), entryDate);
+		return fetchEntriesByAnyColumn(EntrySql.getColumnEntryDate(), entryDate);
 	}
 	
 	private Cursor fetchEntriesByAnyColumn(String columnName, String searchValue)
 	{
 		Cursor entries = sqlDb.query(true,
-		                             Entry.getTableName(),
-		                             Entry.getColumnList(),
+		                             EntrySql.getTableName(),
+		                             EntrySql.getColumnList(),
 		                             columnName + "='" + searchValue + "'",
 		                             null,
 		                             null,
 		                             null,
-		                             null,
+		                             EntrySql.getColumnEntryDate() + DESC,
 		                             null);
 		if (entries != null)
 		{
@@ -286,13 +316,13 @@ public class ThingsToRememberDbAdapter
 	private Cursor fetchEntriesByAnyCriteria(String criteria)
 	{
 		Cursor entries = sqlDb.query(true,
-		                             Entry.getTableName(),
-		                             Entry.getColumnList(),
+		                             EntrySql.getTableName(),
+		                             EntrySql.getColumnList(),
 		                             criteria,
 		                             null,
 		                             null,
 		                             null,
-		                             null,
+		                             EntrySql.getColumnEntryDate() + DESC,
 		                             null);
 		if (entries != null)
 		{
@@ -302,22 +332,22 @@ public class ThingsToRememberDbAdapter
 		return entries;
 	}
 	
-	public Cursor fetchEntriesByMood(String entryMoodId)
+	private Cursor fetchEntriesByMood(String entryMoodId)
 	{
-		return fetchEntriesByAnyColumn(Entry.getColumnMoodId(), entryMoodId);
+		return fetchEntriesByAnyColumn(EntrySql.getColumnMoodId(), entryMoodId);
 	}
 	
-	public Cursor fetchAllMoods()
+	private Cursor fetchAllMoods()
 	{
 		Cursor moods = sqlDb.query(true,
-		                             Mood.getTableName(),
-		                             Mood.getColumnList(),
-		                             null,
-		                             null,
-		                             null,
-		                             null,
-		                             null,
-		                             null);
+		                           MoodSql.getTableName(),
+		                           MoodSql.getColumnList(),
+		                           null,
+		                           null,
+		                           null,
+		                           null,
+		                           null,
+		                           null);
 		if (moods != null)
 		{
 			moods.moveToFirst();
@@ -326,9 +356,9 @@ public class ThingsToRememberDbAdapter
 		return moods;
 	}
 	
-	public Cursor fetchEntriesByKeywordInDescription(String keyword)
+	private Cursor fetchEntriesByKeywordInDescription(String keyword)
 	{
-		return fetchEntriesByAnyCriteria(Entry.getColumnDescription() + "LIKE '%" + keyword + "%'");
+		return fetchEntriesByAnyCriteria(EntrySql.getColumnDescription() + "LIKE '%" + keyword + "%'");
 	}
 	
 	//endregion Entries
@@ -340,19 +370,19 @@ public class ThingsToRememberDbAdapter
 	{
 		ContentValues rowValues = new ContentValues();
 		
-		rowValues.put(Mood.getColumnDescription(), moodDescription);
-		rowValues.put(Mood.getColumnImage(), moodImage);
+		rowValues.put(MoodSql.getColumnDescription(), moodDescription);
+		rowValues.put(MoodSql.getColumnImage(), moodImage);
 		
-		return sqlDb.insert(Mood.getTableName(), null, rowValues);
+		return sqlDb.insert(MoodSql.getTableName(), null, rowValues);
 	}
 	
 	public long createMood(String moodDescription)
 	{
 		ContentValues description = new ContentValues();
 		
-		description.put(Mood.getColumnDescription(), moodDescription);
+		description.put(MoodSql.getColumnDescription(), moodDescription);
 		
-		return sqlDb.insert(Mood.getTableName(), null, description);
+		return sqlDb.insert(MoodSql.getTableName(), null, description);
 	}
 	
 	public boolean updateMood(String moodId,
@@ -361,12 +391,12 @@ public class ThingsToRememberDbAdapter
 	{
 		ContentValues rowValues = new ContentValues();
 		
-		rowValues.put(Mood.getColumnDescription(), moodDescription);
-		rowValues.put(Mood.getColumnImage(), moodImage);
+		rowValues.put(MoodSql.getColumnDescription(), moodDescription);
+		rowValues.put(MoodSql.getColumnImage(), moodImage);
 		
-		return sqlDb.update(Mood.getTableName(),
+		return sqlDb.update(MoodSql.getTableName(),
 		                    rowValues,
-		                    Mood.getColumnId() + "='" + moodId + "'",
+		                    MoodSql.getColumnId() + "='" + moodId + "'",
 		                    null) > 0;
 	}
 	
@@ -375,11 +405,11 @@ public class ThingsToRememberDbAdapter
 	{
 		ContentValues description = new ContentValues();
 		
-		description.put(Mood.getColumnDescription(), moodDescription);
+		description.put(MoodSql.getColumnDescription(), moodDescription);
 		
-		return sqlDb.update(Mood.getTableName(),
+		return sqlDb.update(MoodSql.getTableName(),
 		                    description,
-		                    Mood.getColumnId() + "='" + moodId + "'",
+		                    MoodSql.getColumnId() + "='" + moodId + "'",
 		                    null) > 0;
 	}
 	
@@ -388,34 +418,34 @@ public class ThingsToRememberDbAdapter
 	{
 		ContentValues image = new ContentValues();
 		
-		image.put(Mood.getColumnImage(), moodImage);
+		image.put(MoodSql.getColumnImage(), moodImage);
 		
-		return sqlDb.update(Mood.getTableName(),
+		return sqlDb.update(MoodSql.getTableName(),
 		                    image,
-		                    Mood.getColumnDescription() + "='" + moodDescription + "'",
+		                    MoodSql.getColumnDescription() + "='" + moodDescription + "'",
 		                    null) > 0;
 	}
 	
 	public boolean deleteMood(int id)
 	{
-		return sqlDb.delete(Mood.getTableName(),
-		                    Mood.getColumnId() + "='" + id,
+		return sqlDb.delete(MoodSql.getTableName(),
+		                    MoodSql.getColumnId() + "='" + id,
 		                    null) > 0;
 	}
 	
 	public boolean deleteMood(String description)
 	{
-		return sqlDb.delete(Mood.getTableName(),
-		                    Mood.getColumnDescription() + "='" + description,
+		return sqlDb.delete(MoodSql.getTableName(),
+		                    MoodSql.getColumnDescription() + "='" + description,
 		                    null) > 0;
 	}
 	
-	public Cursor fetchMoodById(int id)
+	private Cursor fetchMoodById(int id)
 	{
 		Cursor mood = sqlDb.query(true,
-		                          Mood.getTableName(),
-		                          Mood.getColumnList(),
-		                          Mood.getColumnId() + "='" + id + "'",
+		                          MoodSql.getTableName(),
+		                          MoodSql.getColumnList(),
+		                          MoodSql.getColumnId() + "='" + id + "'",
 		                          null,
 		                          null,
 		                          null,
@@ -429,12 +459,12 @@ public class ThingsToRememberDbAdapter
 		return mood;
 	}
 	
-	public Cursor fetchMoodByDescription(String description)
+	private Cursor fetchMoodByDescription(String description)
 	{
 		Cursor mood = sqlDb.query(true,
-		                          Mood.getTableName(),
-		                          Mood.getColumnList(),
-		                          Mood.getColumnDescription() + "='" + description + "'",
+		                          MoodSql.getTableName(),
+		                          MoodSql.getColumnList(),
+		                          MoodSql.getColumnDescription() + "='" + description + "'",
 		                          null,
 		                          null,
 		                          null,
@@ -448,12 +478,12 @@ public class ThingsToRememberDbAdapter
 		return mood;
 	}
 	
-	public Cursor fetchMoodByImage(String image)
+	private Cursor fetchMoodByImage(String image)
 	{
 		Cursor mood = sqlDb.query(true,
-		                          Mood.getTableName(),
-		                          Mood.getColumnList(),
-		                          Mood.getColumnImage() + "='" + image + "'",
+		                          MoodSql.getTableName(),
+		                          MoodSql.getColumnList(),
+		                          MoodSql.getColumnImage() + "='" + image + "'",
 		                          null,
 		                          null,
 		                          null,
@@ -471,6 +501,267 @@ public class ThingsToRememberDbAdapter
 	
 	//endregion CRUD methods
 	
+	//region Creates
+	
+	public long addJournal(Journal aJournal)
+	{
+		ContentValues values = new ContentValues();
+		values.put(JournalSql.getColumnName(), aJournal.getName());
+		values.put(JournalSql.getColumnType(), aJournal.getType());
+		
+		return sqlDb.insert(JournalSql.getTableName(), null, values);
+	}
+	
+	public long addEntry(Entry anEntry)
+	{
+		ContentValues values = new ContentValues();
+		values.put(EntrySql.getColumnDescription(), anEntry.getDescription());
+		values.put(EntrySql.getColumnEntryDate(), anEntry.getEntryDate());
+		values.put(EntrySql.getColumnJournalId(), anEntry.getJournalId());
+		values.put(EntrySql.getColumnMoodId(), anEntry.getMoodId());
+		
+		return sqlDb.insert(EntrySql.getTableName(), null, values);
+		
+	}
+	
+	public long addMood(Mood aMood)
+	{
+		ContentValues values = new ContentValues();
+		values.put(MoodSql.getColumnDescription(), aMood.getDescription());
+		values.put(MoodSql.getColumnImage(), aMood.getImage());
+		
+		return sqlDb.insert(MoodSql.getTableName(), null, values);
+	}
+	
+	//endregion Creates
+	
+	
+	private String getColumnStringValueByName(Cursor cursor, String columnName)
+	{
+		int index = cursor.getColumnIndexOrThrow(columnName);
+		
+		return cursor.getString(index);
+	}
+	
+	
+	private String getColumnIntAsStringValueByName(Cursor cursor, String columnName)
+	{
+		int index = cursor.getColumnIndexOrThrow(columnName);
+		
+		return Integer.toString(cursor.getInt(index));
+	}
+	
+	//region Reads
+	
+	public ArrayList<Journal> getAllJournals()
+	{
+		Cursor cursor = this.fetchAllJournals();
+		
+		return convertJournalCursorToArrayList(cursor);
+	}
+	
+	public Journal getJournalByName(String journalName)
+	{
+		Cursor cursor = this.fetchJournalByName(journalName);
+		
+		return convertCursorValueToJournal(cursor);
+	}
+	
+	public ArrayList<Journal> getJournalsByType(String journalType)
+	{
+		Cursor cursor = this.fetchJournalByType(journalType);
+		
+		return convertJournalCursorToArrayList(cursor);
+	}
+	
+	public ArrayList<Entry> getAllEntries()
+	{
+		Cursor cursor = this.fetchAllEntries();
+		
+		return convertEntryCursorToArrayList(cursor);
+	}
+	
+	public ArrayList<Entry> getEntiesByAnyColumn(String columnName, String searchValue)
+	{
+		Cursor cursor = this.fetchEntriesByAnyColumn(columnName, searchValue);
+		
+		return convertEntryCursorToArrayList(cursor);
+	}
+	
+	public ArrayList<Entry> getEntriesByAnyCriteria(String criteria)
+	{
+		Cursor cursor = this.fetchEntriesByAnyCriteria(criteria);
+		
+		return convertEntryCursorToArrayList(cursor);
+	}
+	
+	public ArrayList<Entry> getEntriesByKeyword(String keyword)
+	{
+		Cursor cursor = this.fetchEntriesByKeywordInDescription(keyword);
+		
+		return convertEntryCursorToArrayList(cursor);
+	}
+	
+	public ArrayList<Entry> getEntriesByDate(String entryDate)
+	{
+		Cursor cursor = this.fetchEntriesByDate(entryDate);
+		
+		return convertEntryCursorToArrayList(cursor);
+	}
+	
+	public ArrayList<Entry> getEntriesById(String entryId)
+	{
+		Cursor cursor = this.fetchEntriesByEntryID(entryId);
+		
+		return convertEntryCursorToArrayList(cursor);
+	}
+	
+	public ArrayList<Entry> getEntriesByJournalId(int journalId)
+	{
+		Cursor cursor = this.fetchEntriesByJournalId(journalId);
+		
+		return convertEntryCursorToArrayList(cursor);
+	}
+	
+	public ArrayList<Entry> getEntriesByMoodId(String entryMoodId)
+	{
+		Cursor cursor = this.fetchEntriesByMood(entryMoodId);
+		
+		return convertEntryCursorToArrayList(cursor);
+	}
+	
+	public ArrayList<Mood> getMoodsByDescription(String description)
+	{
+		Cursor cursor = this.fetchMoodByDescription(description);
+		
+		return convertMoodCursorToArrayList(cursor);
+	}
+	
+	public Mood getMoodsById(int id)
+	{
+		Cursor cursor = this.fetchMoodById(id);
+		
+		return convertCursorValueToMood(cursor);
+	}
+	
+	public ArrayList<Mood> getMoodsByImage(String image)
+	{
+		Cursor cursor = this.fetchMoodByImage(image);
+		
+		return convertMoodCursorToArrayList(cursor);
+	}
+	
+	public ArrayList<Mood> getAllMoods()
+	{
+		Cursor cursor = this.fetchAllMoods();
+		
+		return convertMoodCursorToArrayList(cursor);
+	}
+	
+	public List<String> getAllMoodsAsArray()
+	{
+		Cursor cursor = this.fetchAllMoods();
+		
+		return convertMoodCursorToArray(cursor);
+	}
+	
+	//endregion Reads
+	
+	//region Converters
+	
+	private Journal convertCursorValueToJournal(Cursor cursor)
+	{
+		Journal aJournal = new Journal();
+		
+		aJournal.setId(Integer.parseInt(getColumnStringValueByName(cursor, JournalSql.getColumnId())));
+		aJournal.setName(getColumnStringValueByName(cursor, JournalSql.getColumnName()));
+		aJournal.setType(getColumnStringValueByName(cursor, JournalSql.getColumnType()));
+		
+		return aJournal;
+	}
+	
+	private Entry convertCursorValueToEntry(Cursor cursor)
+	{
+		Entry anEntry = new Entry();
+		
+		anEntry.setId(Integer.parseInt(getColumnIntAsStringValueByName(cursor, EntrySql.getColumnId())));
+		anEntry.setDescription(getColumnStringValueByName(cursor, EntrySql.getColumnDescription()));
+		anEntry.setEntryDate(getColumnStringValueByName(cursor, EntrySql.getColumnEntryDate()));
+		anEntry.setJournalId(getColumnIntAsStringValueByName(cursor, EntrySql.getColumnJournalId()));
+		anEntry.setMoodId(getColumnIntAsStringValueByName(cursor, EntrySql.getColumnMoodId()));
+		
+		return anEntry;
+	}
+	
+	private Mood convertCursorValueToMood(Cursor cursor)
+	{
+		Mood aMood = new Mood();
+		
+		aMood.setId(Integer.parseInt(getColumnStringValueByName(cursor, MoodSql.getColumnId())));
+		aMood.setDescription(getColumnStringValueByName(cursor, MoodSql.getColumnDescription()));
+		aMood.setImage(getColumnStringValueByName(cursor, MoodSql.getColumnImage()));
+		
+		return aMood;
+	}
+	
+	private ArrayList<Journal> convertJournalCursorToArrayList(Cursor cursor)
+	{
+		ArrayList<Journal> journals = new ArrayList<>();
+		
+		for (cursor.moveToFirst();
+		     ! cursor.isAfterLast();
+		     cursor.moveToNext())
+		{
+			journals.add(convertCursorValueToJournal(cursor));
+		}
+		
+		return journals;
+	}
+	
+	private ArrayList<Entry> convertEntryCursorToArrayList(Cursor cursor)
+	{
+		ArrayList<Entry> entries = new ArrayList<>();
+		
+		for (cursor.moveToFirst();
+		     ! cursor.isAfterLast();
+		     cursor.moveToNext())
+		{
+			entries.add(convertCursorValueToEntry(cursor));
+		}
+		
+		return entries;
+	}
+	
+	private ArrayList<Mood> convertMoodCursorToArrayList(Cursor cursor)
+	{
+		ArrayList<Mood> moods = new ArrayList<>();
+		
+		for (cursor.moveToFirst();
+		     ! cursor.isAfterLast();
+		     cursor.moveToNext())
+		{
+			moods.add(convertCursorValueToMood(cursor));
+		}
+		
+		return moods;
+	}
+	
+	private List<String> convertMoodCursorToArray(Cursor cursor)
+	{
+		List<String> moods = new ArrayList<>();
+		
+		for (cursor.moveToFirst();
+			 ! cursor.isAfterLast();
+			 cursor.moveToNext())
+		{
+			moods.add(getColumnStringValueByName(cursor, MoodSql.getColumnDescription()));
+		}
+		
+		return moods;
+	}
+	
+	//endregion Converters
+	
 	private static class DatabaseHelper extends SQLiteOpenHelper
 	{
 		private static final String TAG = "DatabaseHelper";
@@ -480,18 +771,18 @@ public class ThingsToRememberDbAdapter
 		{
 			Log.d(TAG, "Creating database tables...");
 			
-			db.execSQL(Journal.getCreateTableStatement());
-			db.execSQL(Entry.getCreateTableStatement());
-			db.execSQL(Mood.getCreateTableStatement());
+			db.execSQL(JournalSql.getCreateTableStatement());
+			db.execSQL(EntrySql.getCreateTableStatement());
+			db.execSQL(MoodSql.getCreateTableStatement());
 		}
 		
 		private void dropTables(SQLiteDatabase db)
 		{
 			Log.d(TAG, "Dropping database tables...");
 			
-			db.execSQL(Journal.getDropTableStatement());
-			db.execSQL(Entry.getDropTableStatement());
-			db.execSQL(Mood.getDropTableStatement());
+			db.execSQL(JournalSql.getDropTableStatement());
+			db.execSQL(EntrySql.getDropTableStatement());
+			db.execSQL(MoodSql.getDropTableStatement());
 		}
 		
 		public void resetDatabase(SQLiteDatabase db)
@@ -506,8 +797,8 @@ public class ThingsToRememberDbAdapter
 			if (oldVersion <= 2)
 			{
 				Log.d(TAG, "Attempting to upgrade DB Version from " + oldVersion + " to " + newVersion);
-				db.execSQL(ALTER + TABLE + Entry.getTableName() +
-						           ADD + Entry.getColumnJournalId() + " INTEGER");
+				db.execSQL(ALTER + TABLE + EntrySql.getTableName() +
+						           ADD + EntrySql.getColumnJournalId() + INTEGER);
 			}
 
 //			if (oldVersion < 3)

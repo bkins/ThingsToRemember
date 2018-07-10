@@ -19,7 +19,7 @@
         android:layout_marginBottom="8dp"
         android:visibility="visible"
         ads:adSize="SMART_BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        ads:adUnitId="@string/AdMobId"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -34,9 +34,21 @@
         android:spinnersShown="false"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/etEntry"
-        app:layout_constraintRight_toRightOf="@id/actMood"
         app:layout_constraintDimensionRatio="w,1:1"
         tools:layout_editor_absoluteX="8dp" />
+
+    <!--<DatePicker-->
+        <!--android:id="@+id/dpEntryDate"-->
+        <!--android:layout_width="1dp"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:layout_weight="4"-->
+        <!--android:calendarViewShown="false"-->
+        <!--android:spinnersShown="false"-->
+        <!--android:visibility="invisible"-->
+        <!--app:layout_constraintBottom_toBottomOf="@+id/etEntry"-->
+        <!--app:layout_constraintDimensionRatio="w,1:1"-->
+        <!--tools:layout_editor_absoluteX="218dp" />-->
 
     <!--<EditText-->
     <TextView
@@ -59,7 +71,6 @@
         style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:layout_width="336dp"
         android:layout_height="330dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -68,21 +79,9 @@
         android:ems="10"
         android:hint="@string/entry_hint"
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toTopOf="@+id/actMood"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etEntryDate" />
-
-    <AutoCompleteTextView
-        android:id="@+id/actMood"
-        android:layout_width="wrap_content"
-        android:layout_height="52dp"
-        android:layout_marginBottom="12dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginStart="24dp"
-        android:hint="@string/mood_hint"
-        app:layout_constraintBottom_toTopOf="@+id/adViewEntry"
-        app:layout_constraintStart_toEndOf="@+id/spinnerMood" />
 
     <Spinner
         android:id="@+id/spinnerMood"
@@ -94,51 +93,5 @@
         android:layout_marginStart="32dp"
         app:layout_constraintBottom_toTopOf="@+id/adViewEntry"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabAddAnother"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:minHeight="320dp"
-        app:layout_constraintBottom_toTopOf="@+id/adViewEntry"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginStart="24dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintEnd_toStartOf="@+id/fabExplore"
-        app:layout_constraintStart_toEndOf="@+id/etEntryDate"
-        app:layout_constraintTop_toTopOf="@+id/fabExplore"
-        app:srcCompat="?android:attr/actionModeCloseDrawable" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabExplore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@android:drawable/ic_menu_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/fabBack"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?android:attr/actionModeCloseDrawable" />
 
 </android.support.constraint.ConstraintLayout>

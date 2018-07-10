@@ -1,23 +1,45 @@
 package com.snikpoh.bhopkins.thingstoremember.Utilities;
 
-import android.content.Context;
 import android.content.res.AssetManager;
+import android.support.annotation.NonNull;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.net.URI;
 
-public class File
+public class File extends java.io.File
 {
 	BufferedReader reader;
 	BufferedWriter writer;
 	
 	AssetManager theAssetManager;
 	
-	public File(Context myContext)
+	public File(@NonNull String pathname)
 	{
-		theAssetManager = myContext.getAssets();
+		super(pathname);
 	}
+	
+	public File(String parent, @NonNull String child)
+	{
+		super(parent, child);
+	}
+	
+	public File(java.io.File parent, @NonNull String child)
+	{
+		super(parent, child);
+	}
+	
+	public File(@NonNull URI uri)
+	{
+		super(uri);
+	}
+
+//	public File(Context myContext)
+//	{
+//		super();
+//		theAssetManager = myContext.getAssets();
+//	}
 	
 	public void write(String fileName, String value)
 	{

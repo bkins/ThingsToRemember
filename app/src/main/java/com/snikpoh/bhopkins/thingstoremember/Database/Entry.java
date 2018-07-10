@@ -1,80 +1,106 @@
 package com.snikpoh.bhopkins.thingstoremember.Database;
 
-import com.snikpoh.bhopkins.thingstoremember.Utilities.SQL;
-
-import java.util.Date;
-
-import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.*;
-
 public class Entry
 {
-	private static final String ENTRY_TABLE_NAME = "Entries";
+	//region Data Members
 	
-	private static final String ENTRY_COLUMN_ID          = "_id";
-	private static final String ENTRY_COLUMN_DESCRIPTION = "Description";
-	private static final String ENTRY_COLUMN_ENTRY_DATE  = "EntryDate";
-	private static final String ENTRY_COLUMN_MOOD_ID     = "MoodId";
-	private static final String ENTRY_COLUMN_JOURNAL_ID  = "JournalId";
+	private int    _id;
+	private String _description;
+	private String _entryDate;
+	private String _journalId;
+	private String _moodId;
 	
-	private static final String[] ENTRY_COLUMN_LIST = new String[]{ENTRY_COLUMN_ID,
-	                                                               ENTRY_COLUMN_DESCRIPTION,
-	                                                               ENTRY_COLUMN_ENTRY_DATE,
-	                                                               ENTRY_COLUMN_MOOD_ID,
-	                                                               ENTRY_COLUMN_JOURNAL_ID};
+	//endregion
 	
-	private static final String CREATE_TABLE_ENTRY = CREATE_TABLE +
-			                                                 ENTRY_TABLE_NAME + " (" +
-			                                                 ENTRY_COLUMN_ID + INTEGER + PRIMARY + KEY + AUTOINCREMENT + "," +
-			                                                 ENTRY_COLUMN_DESCRIPTION + TEXT + ", " +
-			                                                 ENTRY_COLUMN_ENTRY_DATE + TEXT + NOT + NULL + ", " +
-			                                                 ENTRY_COLUMN_MOOD_ID + INTEGER + "," +
-			                                                 ENTRY_COLUMN_JOURNAL_ID + INTEGER + ")";
+	//region Getters and Setters
 	
-	private static final String DROP_TABLE_ENTRY = DROP_TABLE + IF_EXISTS + ENTRY_TABLE_NAME;
-	
-	public static String getTableName()
+	public int getId()
 	{
-		return ENTRY_TABLE_NAME;
+		return _id;
 	}
 	
-	public static String getColumnId()
+	public void setId(int _id)
 	{
-		return ENTRY_COLUMN_ID;
+		this._id = _id;
 	}
 	
-	public static String getColumnDescription()
+	public String getDescription()
 	{
-		return ENTRY_COLUMN_DESCRIPTION;
+		return _description;
 	}
 	
-	public static String getColumnEntryDate()
+	public void setDescription(String description)
 	{
-		return ENTRY_COLUMN_ENTRY_DATE;
+		this._description = description;
 	}
 	
-	public static String getColumnMoodId()
+	public String getEntryDate()
 	{
-		return ENTRY_COLUMN_MOOD_ID;
+		return _entryDate;
 	}
 	
-	public static String getColumnJournalId()
+	public void setEntryDate(String entryDate)
 	{
-		return ENTRY_COLUMN_JOURNAL_ID;
+		this._entryDate = entryDate;
 	}
 	
-	public static String[] getColumnList()
+	public String getJournalId()
 	{
-		return ENTRY_COLUMN_LIST;
+		return _journalId;
 	}
 	
-	public static String getCreateTableStatement()
+	public void setJournalId(String journalId)
 	{
-		return CREATE_TABLE_ENTRY;
+		this._journalId = journalId;
 	}
 	
-	public static String getDropTableStatement()
+	public String getMoodId()
 	{
-		return DROP_TABLE_ENTRY;
+		return _moodId;
 	}
+	
+	public void setMoodId(String moodId)
+	{
+		this._moodId = moodId;
+	}
+	
+	//endregion Getters and Setters
+	
+	//region Constructors
+	
+	public Entry()
+	{
+	
+	}
+	
+	public Entry(String description, String entryDate, String journalId)
+	{
+		this._description = description;
+		this._entryDate = entryDate;
+		this._journalId = journalId;
+	}
+	
+	public Entry(String description, String entryDate, String journalId, String moodId)
+	{
+		this._description = description;
+		this._entryDate = entryDate;
+		this._journalId = journalId;
+		this._moodId = moodId;
+	}
+	
+	public Entry(int id,
+	             String description,
+	             String entryDate,
+	             String journalId,
+	             String moodId)
+	{
+		this._id = id;
+		this._description = description;
+		this._entryDate = entryDate;
+		this._journalId = journalId;
+		this._moodId = moodId;
+	}
+	
+	//endregion Constructors
 	
 }
