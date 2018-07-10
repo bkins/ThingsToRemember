@@ -29,15 +29,16 @@ public class SQL
 	public static final String OUTER            = " OUTER ";
 	public static final String INNER            = " INNER ";
 	public static final String LEFT             = " LEFT ";
-	public static final String RIGHT            = " RIGHT ";
-	public static final String INTEGER          = " INTEGER ";
-	public static final String PRIMARY          = " PRIMARY ";
-	public static final String KEY              = " KEY ";
-	public static final String AUTOINCREMENT    = " AUTOINCREMENT ";
-	public static final String TEXT             = " TEXT ";
-	public static final String NOT              = " NOT ";
-	public static final String NULL             = " NULL";
-	public static final String UNIQUE           = " UNIQUE ";
+	public static final String RIGHT         = " RIGHT ";
+	public static final String INTEGER       = " INTEGER ";
+	public static final String PRIMARY       = " PRIMARY ";
+	public static final String KEY           = " KEY ";
+	public static final String AUTOINCREMENT = " AUTOINCREMENT ";
+	public static final String TEXT          = " TEXT ";
+	public static final String NOT           = " NOT ";
+	public static final String NULL          = " NULL";
+	public static final String UNIQUE        = " UNIQUE ";
+	public static final String DESC          = " DESC";
 	
 	public static String getSelectTop(String number)
 	{

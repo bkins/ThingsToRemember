@@ -10,28 +10,30 @@
 
     <TextView
         android:id="@+id/tvJournalName"
-        android:layout_width="230dp"
-        android:layout_height="20dp"
+        android:layout_width="254dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/a_journal"
-        tools:layout_width="wrap_content"
-        android:clickable="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"/>
-
-    <TextView
-        android:id="@+id/tvJournalType"
-        android:layout_width="230dp"
-        android:layout_height="20dp"
-        android:layout_alignLeft="@+id/tvJournalName"
-        android:layout_below="@+id/tvJournalName"
-        android:text="@string/a_journal"
-        tools:layout_width="wrap_content"
+        android:layout_marginEnd="17dp"
         android:clickable="false"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        />
+        android:text="@string/a_journal"
+        android:layout_marginRight="17dp" />
+
+    <TextView
+        android:id="@+id/tvJournalType"
+        android:layout_width="253dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvJournalName"
+        android:layout_below="@+id/tvJournalName"
+        android:layout_marginLeft="0dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:text="@string/a_journal"
+        tools:layout_width="wrap_content" />
 
     <ImageView
         android:id="@+id/ivJournalImage"

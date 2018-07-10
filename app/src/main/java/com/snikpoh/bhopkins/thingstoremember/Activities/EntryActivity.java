@@ -18,21 +18,29 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.snikpoh.bhopkins.thingstoremember.Database.Journal;
 import com.snikpoh.bhopkins.thingstoremember.Database.Mood;
 import com.snikpoh.bhopkins.thingstoremember.Database.ThingsToRememberDbAdapter;
 import com.snikpoh.bhopkins.thingstoremember.R;
 
 import java.util.ArrayList;
 
+import static com.snikpoh.bhopkins.thingstoremember.Activities.ExploreEntriesActivity.ENTRY_DATE;
+import static com.snikpoh.bhopkins.thingstoremember.Activities.ExploreEntriesActivity.ENTRY_DESCRIPTION;
+import static com.snikpoh.bhopkins.thingstoremember.Activities.ExploreEntriesActivity.ENTRY_ID;
+import static com.snikpoh.bhopkins.thingstoremember.Activities.ExploreEntriesActivity.ENTRY_MOOD;
 import static com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity.JOURNAL_ID;
 import static com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity.JOURNAL_NAME;
 
-public class EntryActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener
+public class EntryActivity extends AppCompatActivity implements View.OnClickListener,
+		                                                                AdapterView.OnItemSelectedListener
 {
 	
 	static final int DATE_DIALOG_ID = 999;
@@ -41,19 +49,23 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 	
 	private final static String ACTIVITY_NAME = MainActivity.class.getSimpleName();
 	
-	private AdView               adView;
-	private FloatingActionButton fabBack;
-	private FloatingActionButton fabExplore;
-	private EditText             etEntry;
-	private TextView             tvEntryDate;
-	private AutoCompleteTextView actMood;
-	private DatePicker           dpEntryDate;
-	private Spinner              spinnerMood;
+	private AdView                    adView;
+//	private FloatingActionButton fabBack;
+//	private FloatingActionButton fabExplore;
+	private FloatingActionButton      fabDone;
+	private EditText                  etEntry;
+	private TextView                  tvEntryDate;
+	private AutoCompleteTextView      actMood;
+	private DatePicker                dpEntryDate;
+	private Spinner                   spinnerMood;
+	private ImageView                 ivAddMood;
 	
 	private ThingsToRememberDbAdapter ttrDb;
 	
 	private String journalName;
 	private String journalId;
+	
+	private String entryId;
 	
 	private int year;
 	private int month;
@@ -78,7 +90,7 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 			dpEntryDate.init(year, month, day, null);
 		}
 	};
-	
+
 	@RequiresApi(api = Build.VERSION_CODES.N) //allows Calendar.getInstance();
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -92,51 +104,75 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		initializeControls();
 		initializeDatabase();
 		
-		setExtraDataFromMain();
+		setExtraDataFromCallingActivity();
 		setTitleText();
 		
 		//TODO:  Remove this!!
 		//loadMoodsTestData();
 		
-		
 		initializeSpinner();
-		
 	}
 	
-	private void setExtraDataFromMain()
+	private void setExtraDataFromCallingActivity()
 	{
+		tvEntryDate.setText(getIntent().getStringExtra(ENTRY_DATE));
+		etEntry.setText(getIntent().getStringExtra(ENTRY_DESCRIPTION));
+		actMood.setText(getIntent().getStringExtra(ENTRY_MOOD));
+		
+		journalId   = getIntent().getStringExtra(JOURNAL_ID);
 		journalName = getIntent().getStringExtra(JOURNAL_NAME);
-		journalId = getIntent().getStringExtra(JOURNAL_ID);
+		entryId     = getIntent().getStringExtra(ENTRY_ID);
 	}
 	
 	private void setTitleText()
 	{
 		if (journalName == null || journalId == null)
 		{
-			this.setTitle("Make an entry:");
+			this.setTitle("Add an entry:");
 		}
 		else
 		{
-			this.setTitle("Make an entry for " + journalName + "(" + journalId + "):");
+			this.setTitle("Entry for " + journalName);
 		}
 	}
+	
 	
 	@RequiresApi(api = Build.VERSION_CODES.N) //allows Calendar.getInstance();
 	private void initializeControls()
 	{
-		fabBack = findViewById(R.id.fabBack);
-		fabBack.setOnClickListener(this);
+		//fabBack = findViewById(R.id.fabBack);
+//		fabBack.setOnClickListener(this);
 		
-		fabExplore = findViewById(R.id.fabExplore);
-		fabExplore.setOnClickListener(this);
+		//fabExplore = findViewById(R.id.fabExplore);
+//		fabExplore.setOnClickListener(this);
+		
+		fabDone = findViewById(R.id.fabDone);
+		fabDone.setOnClickListener(this);
 		
 		etEntry = findViewById(R.id.etEntry);
 		actMood = findViewById(R.id.actMood);
+		actMood.setOnFocusChangeListener(new AutoCompleteTextView.OnFocusChangeListener()
+		{
+			@Override
+			public void onFocusChange(View v, boolean hasFocus)
+			{
+				if (!hasFocus)
+				{
+					//Enter mood into DB
+					tryToWriteMoodToDb();
+					setSpinnerSelection(actMood.getText().toString());
+					actMood.setText("");
+				}
+			}
+		});
 		
 		tvEntryDate = findViewById(R.id.etEntryDate);
 		dpEntryDate = findViewById(R.id.dpEntryDate);
 		
 		spinnerMood = findViewById(R.id.spinnerMood);
+		
+		ivAddMood = findViewById(R.id.ivAddMood);
+		ivAddMood.setOnClickListener(this);
 		
 		setCurrentDateOnView();
 		addListenerOnButton();
@@ -153,6 +189,23 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		
 	}
 	
+	private void setSpinnerSelection(String compareValue)
+	{
+		String[] moods = initializeSpinner();
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+		                                                        android.R.layout.simple_spinner_item,
+		                                                        moods);
+		
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerMood.setAdapter(adapter);
+
+		if (compareValue != null)
+		{
+			int spinnerPosition = adapter.getPosition(compareValue);
+			spinnerMood.setSelection(spinnerPosition);
+		}
+	}
 	// display current date
 	@RequiresApi(api = Build.VERSION_CODES.N) //allows Calendar.getInstance();
 	public void setCurrentDateOnView()
@@ -214,14 +267,51 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		adView.loadAd(adRequest);
 	}
 	
+	private boolean tryToWriteMoodToDb()
+	{
+		String newMood = actMood.getText().toString();
+		try
+		{
+			if ( ! ttrDb.doesMoodExist(newMood))
+			{
+				ttrDb.createMood(newMood, "");
+				
+				Log.d(ACTIVITY_NAME,
+				      newMood + " entered into the DB.");
+			}
+			else
+			{
+				Log.d(ACTIVITY_NAME,
+				      newMood + " already exists in DB. Not entering into the DB.");
+			}
+			return true;
+		}
+		catch (Exception ex)
+		{
+			Log.e(ACTIVITY_NAME, ex.getMessage());
+			return false;
+		}
+	}
+	
 	private boolean tryToWriteEntryToDb()
 	{
 		try
 		{
-			ttrDb.insertIntoEntry(etEntry.getText().toString(),
-			                      tvEntryDate.getText().toString(),
-			                      spinnerMood.getSelectedItem().toString(),
-			                      journalId);
+			if (entryId == null ||
+				entryId.isEmpty())
+			{
+				ttrDb.insertIntoEntry(etEntry.getText().toString(),
+				                      tvEntryDate.getText().toString(),
+				                      spinnerMood.getSelectedItem().toString(),
+				                      journalId);
+			}
+			else
+			{
+				ttrDb.updateEntry(entryId,
+				                  etEntry.getText().toString(),
+				                  tvEntryDate.getText().toString(),
+				                  spinnerMood.getSelectedItem().toString());
+			}
 			
 			Log.d(ACTIVITY_NAME,
 			      journalName +
@@ -246,16 +336,31 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		
 		switch (id)
 		{
-			case R.id.fabBack:
+//			case R.id.fabBack:
+//
+//				if (tryToWriteEntryToDb())
+//				{
+//					startAnActivity(MainActivity.class);
+//				}
+//
+//				break;
+			case R.id.fabDone:
 				
-				if (tryToWriteEntryToDb())
+				if (tvEntryDate.getText().toString().isEmpty())
 				{
-					startAnActivity(MainActivity.class);
+					Toast.makeText(this, "Please enter a date.", Toast.LENGTH_LONG).show();
+				}
+				else
+				{
+					if (tryToWriteEntryToDb())
+					{
+						startAnActivity(ExploreEntriesActivity.class);
+					}
 				}
 				
 				break;
-			
-			case R.id.fabAddAnother:
+				
+			case R.id.fabAddEntry:
 				
 				if (tryToWriteEntryToDb())
 				{
@@ -263,10 +368,17 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 				}
 				
 				break;
-			case R.id.fabExplore:
 				
-				startAnActivity(ExploreEntriesActivity.class, journalName, journalId);
+			case R.id.ivAddMood:
 				
+				startAnActivity(ManageMoodsActivity.class);
+				
+				break;
+				
+//			case R.id.fabExplore:
+//
+//				startAnActivity(ExploreEntriesActivity.class, journalName, journalId);
+//
 			default:
 				
 				Log.d(ACTIVITY_NAME, "default case in onClick (" + id + ")");
@@ -285,8 +397,12 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 	private void startAnActivity(Class activityClass)
 	{
 		Log.d(ACTIVITY_NAME, "Opening activity: " + activityClass.getSimpleName());
+		Cursor cursor = ttrDb.fetchJournalById(Integer.parseInt(journalId));
 		
 		Intent i = new Intent(this, activityClass);
+		i.putExtra(JOURNAL_NAME, cursor.getString(cursor.getColumnIndexOrThrow(Journal.getColumnName())));
+		i.putExtra(JOURNAL_ID, journalId);
+		
 		startActivity(i);
 	}
 	
@@ -316,7 +432,7 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		ttrDb.createMood("Shocked", "ShockedImage");
 	}
 	
-	public String[] getAllMoods()
+	public String[] getAllMoodsAsArray()
 	{
 		Cursor moods = ttrDb.fetchAllMoods();
 		
@@ -337,14 +453,13 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 	public void onBackPressed()
 	{
 		super.onBackPressed();
-		startAnActivity(MainActivity.class);
+		startAnActivity(ExploreEntriesActivity.class);
 	}
 	
-	private void initializeSpinner()
+	private String[] initializeSpinner()
 	{
-		String[] moods = getAllMoods();
+		String[] moods = getAllMoodsAsArray();
 		
-		spinnerMood = findViewById(R.id.spinnerMood);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 		                                                        android.R.layout.simple_spinner_item,
 		                                                        moods);
@@ -352,6 +467,8 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinnerMood.setAdapter(adapter);
 		spinnerMood.setOnItemSelectedListener(this);
+		
+		return moods;
 	}
 	
 	@Override

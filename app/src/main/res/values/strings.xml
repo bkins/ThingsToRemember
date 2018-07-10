@@ -6,9 +6,11 @@
 
     <string name="entry_date_hint">Entry Date</string>
     <string name="entry_hint">Entry</string>
-    <string name="mood_hint">Mood</string>
+    <string name="add_mood_hint">Add Mood</string>
     <string name="journal_name">Journal Name</string>
     <string name="interval">Interval</string>
     <string name="journal_type">Journal Type</string>
+    <string name="add_emoji_hint">Emoji</string>
+    <string name="mood_description_hint">Description</string>
 
 </resources>

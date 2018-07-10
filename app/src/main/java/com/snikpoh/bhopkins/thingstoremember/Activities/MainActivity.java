@@ -160,10 +160,11 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				onClickOfJournalItem(position, EntryActivity.class);
+				onClickOfJournalItem(position, ExploreEntriesActivity.class); // EntryActivity.class); //
 			}
 		});
 	}
+	
 	private void listViewOnLongClick()
 	{
 		

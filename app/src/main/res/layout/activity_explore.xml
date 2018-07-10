@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/tools"
-    android:parentActivityName="com.snikpoh.bhopkins.thingstoremember.Activities.EntryActivity"
-    >
+    android:parentActivityName="com.snikpoh.bhopkins.thingstoremember.Activities.EntryActivity">
 
     <com.google.android.gms.ads.AdView
 
@@ -17,7 +16,7 @@
         android:layout_alignParentBottom="true"
         android:visibility="visible"
         ads:adSize="SMART_BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        ads:adUnitId="@string/ad_mob_id"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -37,6 +36,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+<!--fabAddEntry-->
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabAddEntry"
+
+        android:layout_width="wrap_content"
+        android:layout_height="68dp"
+
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="60dp"
+        android:layout_marginEnd="15dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="@android:color/holo_red_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:tint="@android:color/white"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp" />
 
 </RelativeLayout>
 

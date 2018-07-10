@@ -8,7 +8,7 @@
     tools:context="com.snikpoh.bhopkins.thingstoremember.Activities.EntryActivity"
     android:parentActivityName="com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity"
     >
-
+    <!---->
     <com.google.android.gms.ads.AdView
 
         xmlns:ads="http://schemas.android.com/apk/res-auto"
@@ -16,10 +16,11 @@
         android:id="@+id/adViewEntry"
         android:layout_width="450dp"
         android:layout_height="53dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="344dp"
         android:visibility="visible"
         ads:adSize="SMART_BANNER"
         ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        ads:layout_constraintTop_toBottomOf="@+id/etEntry"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -58,8 +59,7 @@
         android:id="@+id/etEntry"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:layout_width="336dp"
-        android:layout_height="330dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -67,8 +67,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/entry_hint"
-        android:inputType="textMultiLine"
-        app:layout_constraintBottom_toTopOf="@+id/actMood"
+        android:inputType="textMultiLine|textCapSentences"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etEntryDate" />
@@ -76,69 +75,53 @@
     <AutoCompleteTextView
         android:id="@+id/actMood"
         android:layout_width="wrap_content"
-        android:layout_height="52dp"
+        android:layout_height="39dp"
         android:layout_marginBottom="12dp"
         android:layout_marginLeft="24dp"
         android:layout_marginStart="24dp"
-        android:hint="@string/mood_hint"
+        android:hint="@string/add_mood_hint"
+        android:inputType="textCapWords"
+        android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/adViewEntry"
         app:layout_constraintStart_toEndOf="@+id/spinnerMood" />
 
     <Spinner
         android:id="@+id/spinnerMood"
-        android:layout_width="107dp"
-        android:layout_height="41dp"
+        android:layout_width="186dp"
+        android:layout_height="39dp"
         android:layout_marginBottom="12dp"
 
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toTopOf="@+id/adViewEntry"
         app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabAddAnother"
+        android:id="@+id/fabDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="132dp"
+        android:layout_marginStart="132dp"
         android:clickable="true"
-        android:focusable="true"
-        android:minHeight="320dp"
-        app:layout_constraintBottom_toTopOf="@+id/adViewEntry"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginStart="24dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintEnd_toStartOf="@+id/fabExplore"
+        app:layout_constraintEnd_toEndOf="@+id/etEntry"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/etEntryDate"
-        app:layout_constraintTop_toTopOf="@+id/fabExplore"
-        app:srcCompat="?android:attr/actionModeCloseDrawable" />
+        app:srcCompat="@android:drawable/stat_sys_upload_done"
+        tools:layout_editor_absoluteY="4dp" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabExplore"
+    <ImageView
+        android:id="@+id/ivAddMood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@android:drawable/ic_menu_view"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/actMood"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/fabBack"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?android:attr/actionModeCloseDrawable" />
+        app:layout_constraintStart_toEndOf="@+id/actMood"
+        app:layout_constraintTop_toTopOf="@+id/actMood"
+        app:srcCompat="@android:drawable/ic_menu_add" />
 
 </android.support.constraint.ConstraintLayout>

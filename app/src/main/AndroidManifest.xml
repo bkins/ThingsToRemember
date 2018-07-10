@@ -8,18 +8,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".Activities.MainActivity">
-
             <intent-filter>
-
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <!--
-
                 <activity android:name=".MyListViewActivity">
                     <intent-filter>
 
@@ -35,9 +31,8 @@
         <activity android:name=".Activities.ManageJournalsActivity" />
         <activity android:name=".Activities.AppPreferencesActivity" />
         <activity android:name=".Activities.JournalEntriesActivity" />
-
         <activity android:name=".Examples.MyListViewActivity" />
-
+        <activity android:name=".Activities.ManageMoodsActivity"></activity>
     </application>
 
 </manifest>

@@ -9,7 +9,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.*;
+import com.snikpoh.bhopkins.thingstoremember.Utilities.SQL;
+
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.ADD;
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.ALTER;
+import static com.snikpoh.bhopkins.thingstoremember.Utilities.SQL.TABLE;
 
 public class ThingsToRememberDbAdapter
 {
@@ -119,6 +123,25 @@ public class ThingsToRememberDbAdapter
 		                   null);
 	}
 	
+	public Cursor fetchJournalById(int id)
+	{
+		Cursor journal = sqlDb.query(true,
+		                             Journal.getTableName(),
+		                             Journal.getColumnList(),
+		                             Journal.getColumnId() + "=" + id,
+		                             null,
+		                             null,
+		                             null,
+		                             null,
+		                             null);
+		if (journal != null)
+		{
+			journal.moveToFirst();
+		}
+		
+		return journal;
+	}
+	
 	public Cursor fetchJournalByName(String journalName)
 	{
 		Cursor journal = sqlDb.query(true,
@@ -186,7 +209,7 @@ public class ThingsToRememberDbAdapter
 		return sqlDb.insert(Entry.getTableName(), null, rowValues);
 	}
 	
-	public boolean updateJournal(String entryID,
+	public boolean updateEntry(String entryID,
 	                             String entryDescription,
 	                             String entryDate,
 	                             String entryMoodId)
@@ -229,7 +252,7 @@ public class ThingsToRememberDbAdapter
 		                             null,
 		                             null,
 		                             null,
-		                             null,
+		                             Entry.getColumnId() + SQL.DESC,
 		                             null);
 		if (entries != null)
 		{
@@ -429,6 +452,11 @@ public class ThingsToRememberDbAdapter
 		return mood;
 	}
 	
+	public boolean doesMoodExist(String description)
+	{
+		Cursor mood = fetchMoodByDescription(description);
+		return mood.getCount() > 0;
+	}
 	public Cursor fetchMoodByDescription(String description)
 	{
 		Cursor mood = sqlDb.query(true,

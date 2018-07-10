@@ -33,7 +33,7 @@
         android:layout_height="53dp"
         android:visibility="visible"
         ads:adSize="SMART_BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        ads:adUnitId="@string/ad_mob_id"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -47,8 +47,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:editable="true"
         android:hint="@string/journal_name"
+        android:inputType="textCapWords"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.52"
@@ -63,8 +63,8 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-
         android:layout_marginTop="8dp"
+        android:inputType="textCapWords"
         android:hint="@string/journal_type"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -138,15 +139,24 @@ public class ManageJournalsActivity extends AppCompatActivity implements View.On
 	{
 		try
 		{
-			ttrDb.insertJournal(etJournalName.getText().toString(),
-			                    etJournalType.getText().toString());
-			
-			Log.d(ACTIVITY_NAME,
-			      etJournalName.getText().toString() +
-					      ": DB Entry of: " +
-					      etJournalName.getText().toString() + "; " +
-					      etJournalType.getText().toString());
-			return true;
+			String journalName = etJournalName.getText().toString();
+			if (journalName.trim().length() != 0)
+			{
+				ttrDb.insertJournal(journalName,
+				                    etJournalType.getText().toString());
+				
+				Log.d(ACTIVITY_NAME,
+				      etJournalName.getText().toString() +
+						      ": DB Entry of: " +
+						      etJournalName.getText().toString() + "; " +
+						      etJournalType.getText().toString());
+				return true;
+			}
+			else
+			{
+				Toast.makeText(this, "Please provide a name for your Journal", Toast.LENGTH_LONG).show();
+				return false;
+			}
 		}
 		catch (Exception ex)
 		{
