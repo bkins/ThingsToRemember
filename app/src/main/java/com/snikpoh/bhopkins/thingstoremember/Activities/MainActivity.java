@@ -292,6 +292,13 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 		
 	}
 	
+	@Override
+	public void onBackPressed()
+	{
+		super.onBackPressed();
+		
+	}
+	
 	//region Activity States
 	
 	@Override
