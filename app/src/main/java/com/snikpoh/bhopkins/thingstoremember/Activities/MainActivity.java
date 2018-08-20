@@ -7,16 +7,12 @@ package com.snikpoh.bhopkins.thingstoremember.Activities;
 * Requirement :           1)  Display emojis in Mood Spinner
 * Requirement :           2)  Create new Activity for managing Moods
 * Requirement : 3)  In the ExploreEntriesActivity sort Entries by date in DESC order
-* Requirement : 4)  Figure why back button is not simply going back an activity, and then exiting when it gets to the main activity
 * Requirement : 5)  Implement Service to find entries that happened a year ago and send notification
-* Requirement : 6)  Do not allow adding of "empty" entries or journals
-* Requirement : 7)  Reordering flow: Main -> Explore, click '+' -> Entry
-* Requirement :         1) An "Add" button instead of having the entry added when the <- is pressed
+* Requirement : 6)  Do not allow adding of "empty" entries
 *
 * Look/Feel : 1) Implement swipe to delete Journals (and entries?)
-* Look/Feel : 2) In the ExploreEntriesActivity the Entry and Mood fields are crowded * Look/Feel : 3) Move Preference button up to the title bar
+* Look/Feel : 2) In the ExploreEntriesActivity the Entry and Mood fields are crowded
 *
- * Future : 1)    Implement custom images on journals (Main Activity)
  *
 * Consider : 3) Implementing user managed list of Journal Types.  Like how will be doing Moods
 * Consider :        1)  Implement in the ManageJournalsActivity.
@@ -28,15 +24,31 @@ package com.snikpoh.bhopkins.thingstoremember.Activities;
 *
 * *Future to-dos are to be made Requirements after the release of v1.0
 *
+ * Future : 1)    Implement custom images on journals (Main Activity)
+ *
 * */
+//endregion
+
+//region TODOne List
+/*
+ * Requirement : 4)  Figure why back button is not simply going back an activity, and then exiting when it gets to the main activity (DONE: 8/18/2018)
+ * Requirement : 6)  Do not allow adding of "empty" journals (Verified this is DONE: 8/18/2018)
+ * Requirement : 7)  Reordering flow: Main -> Explore, click '+' -> Entry (Verified this is DONE: 8/18/2018)
+ * Requirement :         1) An "Add" button instead of having the entry added when the <- is pressed (Verified this is DONE: 8/18/2018)
+ * Look/Feel : 3) Move Preference button up to the title bar (Looks better: 8/18/2018)
+ *
+ *
+ */
 //endregion
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
@@ -78,6 +90,13 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 	private ThingsToRememberDbAdapter ttrDb;
 	private SimpleCursorAdapter       cursorAdapter;
 	private boolean adMobKey;
+	
+	@Override
+	public void onBackPressed()
+	{
+		super.onBackPressed();
+		closeApp();
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -279,6 +298,12 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 		startActivity(i);
 	}
 	
+	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN) //for finishAffinity
+	private void closeApp()
+	{
+		this.finishAffinity();
+	}
+	
 	protected void onButtonClick(View view)
 	{
 		Log.d(ACTIVITY_NAME, "onButtonClick()");
@@ -289,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 //			tv.setTextSize(40);
 //			tv.setTextColor(getResources().getColor(R.color.myCustomColor));
 //		}
-		
+	
 	}
 	
 	//region Activity States

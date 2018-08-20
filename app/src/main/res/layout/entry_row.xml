@@ -29,7 +29,7 @@
         android:layout_marginTop="54dp"
         android:alpha="10"
         android:ellipsize="none"
-        android:fadingEdgeLength="240dp"
+        android:fadingEdgeLength="100dp"
         android:hint="@string/entry_hint"
         android:requiresFadingEdge="horizontal"
         android:singleLine="true"

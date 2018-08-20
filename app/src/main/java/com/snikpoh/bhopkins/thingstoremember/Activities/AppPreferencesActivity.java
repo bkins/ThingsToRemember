@@ -38,23 +38,13 @@ public class AppPreferencesActivity extends PreferenceActivity
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState)
 	{
-		
 		super.onRestoreInstanceState(savedInstanceState);
-
-//		String myText = savedInstanceState.getString("MYTEXT");
-//		if (myText != null){
-//			myEditText.setText(myText);
-//		}
 	}
 	
 	@Override
 	public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState)
 	{
 		super.onSaveInstanceState(outState, outPersistentState);
-
-//		String myText = myEditText.getText().toString();
-//		outState.putString("MYTEXT", myText);
-
 	}
 	
 	@Override
@@ -62,9 +52,11 @@ public class AppPreferencesActivity extends PreferenceActivity
 	{
 		super.onPause();
 		Log.d(ACTIVITY_NAME, "onPauses was called");
-//		if(isFinishing(){
-//			Log.d(ACTIVITY_NAME, "the activity is being finished ");
-//		}
+		
+		if(isFinishing())
+		{
+			Log.d(ACTIVITY_NAME, "the activity is being finished ");
+		}
 
 //		adView.pause();
 	}
