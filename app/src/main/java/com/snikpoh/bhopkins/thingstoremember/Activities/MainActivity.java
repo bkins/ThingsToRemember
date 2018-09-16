@@ -41,6 +41,7 @@ package com.snikpoh.bhopkins.thingstoremember.Activities;
  */
 //endregion
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 	private SimpleCursorAdapter       cursorAdapter;
 	private boolean adMobKey;
 	
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@Override
 	public void onBackPressed()
 	{
@@ -186,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 	
 	private void listViewOnLongClick()
 	{
-		
 		lvJournals.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
 		{
 			@Override
@@ -250,16 +251,8 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 				startAnActivity(ManageJournalsActivity.class);
 				
 				break;
-
-//			case R.id.ivJournalImage:
-//			case R.id.lvJournals:
-//			case R.id.tvJournalName:
-//			case R.id.tvJournalType:
-//
-//				startAnActivity(EntryActivity.class);
-//
-//				break;
-//
+			
+			case R.id.lvJournals:
 			default:
 				
 				Log.d(ACTIVITY_NAME, "default case in onClick (" + id + ")");
@@ -307,14 +300,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 	protected void onButtonClick(View view)
 	{
 		Log.d(ACTIVITY_NAME, "onButtonClick()");
-
-//		Toast.makeText(getBaseContext(), "Button has been clicked", Toast.LENGTH_SHORT).show();
-//
-//		if (tv !=null) {
-//			tv.setTextSize(40);
-//			tv.setTextColor(getResources().getColor(R.color.myCustomColor));
-//		}
-	
 	}
 	
 	//region Activity States
@@ -322,23 +307,13 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState)
 	{
-		
 		super.onRestoreInstanceState(savedInstanceState);
-
-//		String myText = savedInstanceState.getString("MYTEXT");
-//		if (myText != null){
-//			myEditText.setText(myText);
-//		}
 	}
 	
 	@Override
 	public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState)
 	{
 		super.onSaveInstanceState(outState, outPersistentState);
-
-//		String myText = myEditText.getText().toString();
-//		outState.putString("MYTEXT", myText);
-		
 	}
 	
 	@Override
@@ -346,10 +321,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 	{
 		super.onPause();
 		Log.d(ACTIVITY_NAME, "onPauses was called");
-//		if(isFinishing(){
-//			Log.d(ACTIVITY_NAME, "the activity is being finished ");
-//		}
-		
 		adView.pause();
 	}
 	

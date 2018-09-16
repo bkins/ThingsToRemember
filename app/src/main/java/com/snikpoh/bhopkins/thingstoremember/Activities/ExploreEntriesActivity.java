@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.snikpoh.bhopkins.thingstoremember.Database.Entry;
+import com.snikpoh.bhopkins.thingstoremember.Database.Mood;
 import com.snikpoh.bhopkins.thingstoremember.Database.ThingsToRememberDbAdapter;
 import com.snikpoh.bhopkins.thingstoremember.R;
 
@@ -33,7 +34,7 @@ public class ExploreEntriesActivity extends AppCompatActivity
 	private TextView tvEntryDate;
 	private TextView tvEntry;
 	private TextView tvMood;
-	
+	private TextView tvMoodEmoji;
 	private ListView lvEntries;
 	
 	private FloatingActionButton fabAddEntry;
@@ -55,7 +56,6 @@ public class ExploreEntriesActivity extends AppCompatActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_explore);
 		
@@ -73,7 +73,7 @@ public class ExploreEntriesActivity extends AppCompatActivity
 	{
 		if (journalName == null || journalId == null)
 		{
-			this.setTitle("Make an entry:"); ///should be able to get here
+			this.setTitle("Make an entry:"); ///shouldn't be able to get here
 		}
 		else
 		{
@@ -148,9 +148,6 @@ public class ExploreEntriesActivity extends AppCompatActivity
 		{
 			lvEntries.setAdapter(entries);
 		}
-		
-//		listViewOnClick();
-//		listViewOnLongClick();
 	}
 	
 	private void setExtraDataFromActivity()

@@ -336,14 +336,7 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		
 		switch (id)
 		{
-//			case R.id.fabBack:
-//
-//				if (tryToWriteEntryToDb())
-//				{
-//					startAnActivity(MainActivity.class);
-//				}
-//
-//				break;
+
 			case R.id.fabDone:
 				
 				if (tvEntryDate.getText().toString().isEmpty())
@@ -375,10 +368,6 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 				
 				break;
 				
-//			case R.id.fabExplore:
-//
-//				startAnActivity(ExploreEntriesActivity.class, journalName, journalId);
-//
 			default:
 				
 				Log.d(ACTIVITY_NAME, "default case in onClick (" + id + ")");

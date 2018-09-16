@@ -12,5 +12,7 @@
     <string name="journal_type">Journal Type</string>
     <string name="add_emoji_hint">Emoji</string>
     <string name="mood_description_hint">Description</string>
+    <string name="mood_hint">Mood</string>
+    <string name="smiley">:-)</string>
 
 </resources>
