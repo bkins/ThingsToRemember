@@ -15,4 +15,8 @@
     <string name="mood_hint">Mood</string>
     <string name="smiley">:-)</string>
 
+    <string name="interval_check_service_description">This periodically checks to see if you have things to remember on this day.  If you stop this service, then you risk not getting notifications of things to remember.</string>
+    <string name="database_syncer_service_description">This service is responsible for keeping the online database and the local database in sync for the Things to Remember app.</string>
+    <string name="things_to_remember_service_label">Things to Remember service</string>
+
 </resources>

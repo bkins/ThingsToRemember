@@ -32,7 +32,20 @@
         <activity android:name=".Activities.AppPreferencesActivity" />
         <activity android:name=".Activities.JournalEntriesActivity" />
         <activity android:name=".Examples.MyListViewActivity" />
-        <activity android:name=".Activities.ManageMoodsActivity"></activity>
+        <activity android:name=".Activities.ManageMoodsActivity"/>
+
+        <service
+            android:name=".Services.IntervalChecker"
+            android:label="@string/things_to_remember_service_label"
+            android:description= "@string/interval_check_service_description"
+        />
+
+        <service
+            android:name=".Services.DatabaseSyncer"
+            android:label="@string/things_to_remember_service_label"
+            android:description="@string/database_syncer_service_description"
+        />
+
     </application>
 
 </manifest>

@@ -302,6 +302,13 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 		Log.d(ACTIVITY_NAME, "onButtonClick()");
 	}
 	
+	@Override
+	public void onBackPressed()
+	{
+		super.onBackPressed();
+		
+	}
+	
 	//region Activity States
 	
 	@Override

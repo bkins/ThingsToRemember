@@ -38,6 +38,7 @@ import static com.snikpoh.bhopkins.thingstoremember.Activities.ExploreEntriesAct
 import static com.snikpoh.bhopkins.thingstoremember.Activities.ExploreEntriesActivity.ENTRY_MOOD;
 import static com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity.JOURNAL_ID;
 import static com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity.JOURNAL_NAME;
+import static com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity.JOURNAL_TYPE;
 
 public class EntryActivity extends AppCompatActivity implements View.OnClickListener,
 		                                                                AdapterView.OnItemSelectedListener
@@ -64,6 +65,7 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 	
 	private String journalName;
 	private String journalId;
+	private String journalType;
 	
 	private String entryId;
 	
@@ -391,8 +393,22 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		Intent i = new Intent(this, activityClass);
 		i.putExtra(JOURNAL_NAME, cursor.getString(cursor.getColumnIndexOrThrow(Journal.getColumnName())));
 		i.putExtra(JOURNAL_ID, journalId);
+		i.putExtra(JOURNAL_TYPE, cursor.getString(cursor.getColumnIndexOrThrow(Journal.getColumnType())));
 		
 		startActivity(i);
+	}
+	
+	private void startAnActivity(Class activityClass, String journalName, String journalId, String journalType)
+	{
+		Log.d(ACTIVITY_NAME, "Opening activity: " + activityClass.getSimpleName());
+		
+		Intent i = new Intent(this, activityClass);
+		i.putExtra(JOURNAL_NAME, journalName);
+		i.putExtra(JOURNAL_ID, journalId);
+		i.putExtra(JOURNAL_TYPE, journalType);
+		startActivity(i);
+		
+		finish();
 	}
 	
 	private void startAnActivity(Class activityClass, String journalName, String journalId)
@@ -437,12 +453,19 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		
 		return descriptions.toArray(new String[descriptions.size()]);
 	}
-	
 	@Override
 	public void onBackPressed()
 	{
-		super.onBackPressed();
-		startAnActivity(ExploreEntriesActivity.class);
+		try
+		{
+			super.onBackPressed();
+			tryToWriteEntryToDb();
+			startAnActivity(ExploreEntriesActivity.class, journalName, journalId, journalType);
+		}
+		catch (Exception ex)
+		{
+			//TODO: what could happen, and how to handle it
+		}
 	}
 	
 	private String[] initializeSpinner()
