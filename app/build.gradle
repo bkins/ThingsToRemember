@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        Release {
+            keyAlias 'HopKey'
+            keyPassword '1mcdtwo50m.nmcdtwo1em.'
+            storeFile file('C:/Users/Ben/keystores/android.jks')
+            storePassword 'iH2k1w&1d'
+        }
+    }
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.snikpoh.bhopkins.thingstoremember"

@@ -174,7 +174,7 @@ public class ManageJournalsActivity extends AppCompatActivity implements View.On
 		
 		try
 		{
-			ttrDb.deleteJournal(journalName);
+			ttrDb.deleteJournalById(journalId);
 			
 			startAnActivity(MainActivity.class);
 			

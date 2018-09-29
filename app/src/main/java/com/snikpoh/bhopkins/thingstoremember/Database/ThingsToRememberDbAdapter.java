@@ -83,6 +83,13 @@ public class ThingsToRememberDbAdapter
 		                    null) > 0;
 	}
 	
+	public boolean deleteJournalById(String journalId)
+	{
+		return sqlDb.delete(Journal.getTableName(),
+		                    Journal.getColumnId() + "=" + journalId,
+		                    null) > 0;
+	}
+	
 	public boolean deleteJournal(String journalName)
 	{
 		return sqlDb.delete(Journal.getTableName(),

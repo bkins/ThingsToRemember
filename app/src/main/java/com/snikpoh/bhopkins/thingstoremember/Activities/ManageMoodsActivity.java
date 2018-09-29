@@ -18,6 +18,7 @@ import com.snikpoh.bhopkins.thingstoremember.R;
 import static com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity.JOURNAL_ID;
 import static com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity.JOURNAL_NAME;
 import static com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity.JOURNAL_TYPE;
+import static com.snikpoh.bhopkins.thingstoremember.BuildConfig.DEBUG;
 
 public class ManageMoodsActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -35,7 +36,7 @@ public class ManageMoodsActivity extends AppCompatActivity implements View.OnCli
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_manage_moods);
 		
-		this.setTitle("Manage Moods");
+		this.setTitle(getString(R.string.manage_mood_title));
 		
 		initializeControls();
 		initializeDatabase();
@@ -83,20 +84,26 @@ public class ManageMoodsActivity extends AppCompatActivity implements View.OnCli
 				
 				String moodDescription = etMoodDescription.getText().toString();
 				
-				if (! moodComplete())
+				if (validateMoodIsComplete())
 				{
-					Toast.makeText(this, "You must enter a Description and an Emoji.", Toast.LENGTH_LONG);
-					
-					break;
+					saveMood(moodDescription);
 				}
-				
-				saveMood(moodDescription);
-				
 				break;
 				
 			default:
 			
 		}
+	}
+	
+	private boolean validateMoodIsComplete()
+	{
+		if (! moodComplete())
+		{
+			Toast.makeText(this, "You must enter a Description and an Emoji.", Toast.LENGTH_LONG).show();
+			
+			return false;
+		}
+		return true;
 	}
 	
 	private boolean moodComplete()
@@ -112,7 +119,7 @@ public class ManageMoodsActivity extends AppCompatActivity implements View.OnCli
 	
 	private void startAnActivity(Class activityClass)
 	{
-		Log.d(ACTIVITY_NAME, "Opening activity: " + activityClass.getSimpleName());
+		if (DEBUG) Log.d(ACTIVITY_NAME, "Opening activity: " + activityClass.getSimpleName());
 		
 		Intent i = new Intent(this, activityClass);
 		startActivity(i);
@@ -120,7 +127,7 @@ public class ManageMoodsActivity extends AppCompatActivity implements View.OnCli
 	
 	private void startAnActivity(Class activityClass, String journalName)
 	{
-		Log.d(ACTIVITY_NAME, "Opening activity: " + activityClass.getSimpleName());
+		if (DEBUG) Log.d(ACTIVITY_NAME, "Opening activity: " + activityClass.getSimpleName());
 		
 		Intent i = new Intent(this, activityClass);
 		i.putExtra(Journal.getColumnName(), journalName);
@@ -130,7 +137,7 @@ public class ManageMoodsActivity extends AppCompatActivity implements View.OnCli
 	
 	private void startAnActivity(Class activityClass, String journalName, String journalId, String journalType)
 	{
-		Log.d(ACTIVITY_NAME, "Opening activity: " + activityClass.getSimpleName());
+		if (DEBUG) Log.d(ACTIVITY_NAME, "Opening activity: " + activityClass.getSimpleName());
 		
 		Intent i = new Intent(this, activityClass);
 		i.putExtra(JOURNAL_NAME, journalName);

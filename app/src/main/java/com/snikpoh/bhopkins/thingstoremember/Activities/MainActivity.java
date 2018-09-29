@@ -2,7 +2,6 @@ package com.snikpoh.bhopkins.thingstoremember.Activities;
 
 // region TO-DO list
 /*
-* Requirement : 1)  Need to delete by Journal ID instead of Name
 * Requirement : 2)  Implement emojis to be associated with Moods
 * Requirement :           1)  Display emojis in Mood Spinner
 * Requirement :           2)  Create new Activity for managing Moods
@@ -31,6 +30,7 @@ package com.snikpoh.bhopkins.thingstoremember.Activities;
 
 //region TODOne List
 /*
+ * Requirement : 1)  Need to delete by Journal ID instead of Name
  * Requirement : 4)  Figure why back button is not simply going back an activity, and then exiting when it gets to the main activity (DONE: 8/18/2018)
  * Requirement : 6)  Do not allow adding of "empty" journals (Verified this is DONE: 8/18/2018)
  * Requirement : 7)  Reordering flow: Main -> Explore, click '+' -> Entry (Verified this is DONE: 8/18/2018)
@@ -300,13 +300,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 	protected void onButtonClick(View view)
 	{
 		Log.d(ACTIVITY_NAME, "onButtonClick()");
-	}
-	
-	@Override
-	public void onBackPressed()
-	{
-		super.onBackPressed();
-		
 	}
 	
 	//region Activity States

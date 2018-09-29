@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.snikpoh.bhopkins.thingstoremember.BuildConfig;
 import com.snikpoh.bhopkins.thingstoremember.Database.Journal;
 import com.snikpoh.bhopkins.thingstoremember.Database.Mood;
 import com.snikpoh.bhopkins.thingstoremember.Database.ThingsToRememberDbAdapter;
@@ -264,6 +266,10 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 	
 	private void loadAdView(int adViewID)
 	{
+		
+		MobileAds.initialize(this,
+		                     BuildConfig.AdMobId);
+		
 		adView = findViewById(adViewID);
 		AdRequest adRequest = new AdRequest.Builder().build();
 		adView.loadAd(adRequest);
