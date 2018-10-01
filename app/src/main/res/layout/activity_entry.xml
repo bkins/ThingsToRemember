@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.snikpoh.bhopkins.thingstoremember.Activities.EntryActivity"
     android:parentActivityName="com.snikpoh.bhopkins.thingstoremember.Activities.MainActivity"
-    >
+    tools:context="com.snikpoh.bhopkins.thingstoremember.Activities.EntryActivity">
     <!---->
     <com.google.android.gms.ads.AdView
 
@@ -16,11 +14,9 @@
         android:id="@+id/adViewEntry"
         android:layout_width="450dp"
         android:layout_height="53dp"
-        android:layout_marginTop="344dp"
         android:visibility="visible"
         ads:adSize="SMART_BANNER"
         ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
-        ads:layout_constraintTop_toBottomOf="@+id/etEntry"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -35,7 +31,6 @@
         android:spinnersShown="false"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/etEntry"
-        app:layout_constraintRight_toRightOf="@id/actMood"
         app:layout_constraintDimensionRatio="w,1:1"
         tools:layout_editor_absoluteX="8dp" />
 
@@ -44,55 +39,51 @@
         android:id="@+id/etEntryDate"
         android:layout_width="179dp"
         android:layout_height="37dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="@string/entry_date_hint"
         android:inputType="none"
         android:text=""
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textIsSelectable="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:fontFamily="@font/abeezee" />
 
     <EditText
         android:id="@+id/etEntry"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
-        android:layout_width="336dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
+        android:gravity="center_vertical"
         android:hint="@string/entry_hint"
         android:inputType="textMultiLine|textCapSentences"
+        android:maxHeight="100dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerMood"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEntryDate" />
-
-    <AutoCompleteTextView
-        android:id="@+id/actMood"
-        android:layout_width="wrap_content"
-        android:layout_height="39dp"
-        android:layout_marginBottom="12dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginStart="24dp"
-        android:hint="@string/add_mood_hint"
-        android:inputType="textCapWords"
-        android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/adViewEntry"
-        app:layout_constraintStart_toEndOf="@+id/spinnerMood" />
+        app:layout_constraintTop_toBottomOf="@+id/etEntryDate"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="@tools:sample/lorem/random" />
 
     <Spinner
         android:id="@+id/spinnerMood"
         android:layout_width="186dp"
         android:layout_height="39dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginStart="28dp"
 
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/adViewEntry"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -100,8 +91,8 @@
         android:id="@+id/fabDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="132dp"
         android:layout_marginStart="132dp"
+        android:layout_marginLeft="132dp"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="@+id/etEntry"
         app:layout_constraintHorizontal_bias="1.0"
@@ -113,15 +104,15 @@
         android:id="@+id/ivAddMood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/actMood"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/adViewEntry"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/actMood"
-        app:layout_constraintTop_toTopOf="@+id/actMood"
+        app:layout_constraintHorizontal_bias="0.641"
+        app:layout_constraintStart_toEndOf="@+id/spinnerMood"
         app:srcCompat="@android:drawable/ic_menu_add" />
 
 </android.support.constraint.ConstraintLayout>

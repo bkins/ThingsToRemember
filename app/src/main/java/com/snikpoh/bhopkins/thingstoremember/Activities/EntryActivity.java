@@ -121,7 +121,7 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 	{
 		tvEntryDate.setText(getIntent().getStringExtra(ENTRY_DATE));
 		etEntry.setText(getIntent().getStringExtra(ENTRY_DESCRIPTION));
-		actMood.setText(getIntent().getStringExtra(ENTRY_MOOD));
+		//actMood.setText(getIntent().getStringExtra(ENTRY_MOOD));
 		
 		journalId   = getIntent().getStringExtra(JOURNAL_ID);
 		journalName = getIntent().getStringExtra(JOURNAL_NAME);
@@ -154,21 +154,23 @@ public class EntryActivity extends AppCompatActivity implements View.OnClickList
 		fabDone.setOnClickListener(this);
 		
 		etEntry = findViewById(R.id.etEntry);
-		actMood = findViewById(R.id.actMood);
-		actMood.setOnFocusChangeListener(new AutoCompleteTextView.OnFocusChangeListener()
-		{
-			@Override
-			public void onFocusChange(View v, boolean hasFocus)
-			{
-				if (!hasFocus)
-				{
-					//Enter mood into DB
-					tryToWriteMoodToDb();
-					setSpinnerSelection(actMood.getText().toString());
-					actMood.setText("");
-				}
-			}
-		});
+		
+		//TODO: user Mood spinner to set Mood value in database
+//		actMood = findViewById(R.id.actMood);
+//		actMood.setOnFocusChangeListener(new AutoCompleteTextView.OnFocusChangeListener()
+//		{
+//			@Override
+//			public void onFocusChange(View v, boolean hasFocus)
+//			{
+//				if (!hasFocus)
+//				{
+//					//Enter mood into DB
+//					tryToWriteMoodToDb();
+//					setSpinnerSelection(actMood.getText().toString());
+//					actMood.setText("");
+//				}
+//			}
+//		});
 		
 		tvEntryDate = findViewById(R.id.etEntryDate);
 		dpEntryDate = findViewById(R.id.dpEntryDate);
